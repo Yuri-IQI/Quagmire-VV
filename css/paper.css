@@ -1,0 +1,64 @@
+.map_board {
+    position: relative;
+}
+
+.map_board img {
+    height: 100%;
+    width: 100%;
+}
+
+#map_paper {
+    position: absolute;
+    align-content: center;
+    width: 90%;
+    height: 90%;
+    top: 32px;
+    left: 60px;
+    transition: transform .2s;
+}
+
+.map_element {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#Icons {
+    position: absolute;
+    top: 40px;
+    left: 75px;
+    width: 1320px;
+    height: 900px;
+    outline-color: blue;
+}
+
+.icon {
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+/*.coast {
+    position: absolute;
+    top: 90%;
+    left: 80%;
+    width: auto;
+    height: auto;
+}
+
+.map_paper img {
+    width: auto;
+    height: auto;
+}
+
+
+
+.coast img {
+    width: auto;
+    height: auto;
+}
+
+.mar img {
+    width: auto;
+    height: auto;
+}*/
