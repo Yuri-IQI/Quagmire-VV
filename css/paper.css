@@ -41,6 +41,13 @@
     top: 0;
     left: 0;
 }
+
+svg {
+    position: absolute;
+    opacity: 60%;
+    top: 50px;
+    left: 84px;
+}
 /*.coast {
     position: absolute;
     top: 90%;
