@@ -5,28 +5,25 @@ import psycopg2
 app = Flask(__name__)
 CORS(app)
 
-import psycopg2
-
 class Fetcher:
     def __init__(self):
         self.connection = psycopg2.connect(
-            database="Quagmire VV",
+            database="Quagmire",
             user="postgres",
-            password="123456",
+            password="Yuri.0025",
             host="localhost",
-            port="5433"
+            port="5432"
         )
 
     def fetch(self, query):
         cursor = self.connection.cursor()
         cursor.execute(query)
-        return cursor.fetchall()
-
+        return cursor.fetchall()  
 
 fetcher = Fetcher()
 coordenadas = []
-for i in fetcher.fetch("SELECT coordenadas FROM quagmire_cities"):
-    coordenadas.append(i[0])
+for id, coordenada in fetcher.fetch("SELECT id, coords FROM cities"):
+    coordenadas.append(coordenada)
 print(coordenadas)
 
 @app.route('/get_coordinates', methods=['GET'])

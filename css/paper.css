@@ -23,13 +23,17 @@
     left: 0;
 }
 
-#Icons {
+#icons {
     position: absolute;
     top: 40px;
-    left: 75px;
-    width: 1320px;
+    left: 80px;
+    width: 1340px;
     height: 900px;
     outline-color: blue;
+}
+
+#icons img {
+    opacity: 60%;
 }
 
 .icon {
@@ -37,7 +41,6 @@
     top: 0;
     left: 0;
 }
-
 /*.coast {
     position: absolute;
     top: 90%;
