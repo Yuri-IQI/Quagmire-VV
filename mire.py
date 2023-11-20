@@ -39,9 +39,25 @@ class Routes:
             B = connection[1][1]
             length = math.sqrt((B[0] - A[0])**2 + (B[1] - A[1])**2)
 
-            if length < 100:
+            if length < 110:
                 self.revised_connections.append(connection)
+                    
         return self.revised_connections
+    
+    #def verify(self):
+        for link in self.revised_connections:
+            A = link[0][0]
+            B = link[1][0]
+
+class Travel:
+    def __init__(self):
+        self.path = Routes()
+        self.connections = path.way()
+        self.revised_connections = path.measure()
+
+    def verify(self):
+        for link in self.revised_connections:
+            link = 0
 
 fetcher = Fetcher()
 path = Routes()
@@ -49,7 +65,7 @@ path = Routes()
 coordenadas = []
 for id, coordenada in fetcher.fetch("SELECT id, coords FROM cities"):
     path.cities.append([id, coordenada])
-    coordenadas.append(coordenada)
+    coordenadas.append([id, coordenada])
 
 @app.route('/get_coordinates', methods=['GET'])
 def get_coordinates():
