@@ -25,16 +25,16 @@ window.onload = function() {
               this.style.border = "2px dashed darkred";
               this.style.borderRadius = "16px";
               this.style.padding = "2px";
-              this.style.left = coordinatesArray[i][1][0] - 8 + "px"; // Assuming the x-coordinate is at index 1[0]
-              this.style.top = coordinatesArray[i][1][1] - 3 + "px"; // Assuming the y-coordinate is at index 1[1]
+              this.style.left = coordinatesArray[i][1][0] - 10 + "px"; // Assuming the x-coordinate is at index 1[0]
+              this.style.top = coordinatesArray[i][1][1] - 5 + "px"; // Assuming the y-coordinate is at index 1[1]
               currentSelectedImg = this;
             }
           } else {
             this.style.border = "2px dashed darkred";
             this.style.borderRadius = "16px";
             this.style.padding = "2px";
-            this.style.left = coordinatesArray[i][1][0] - 8 + "px"; // Assuming the x-coordinate is at index 1[0]
-            this.style.top = coordinatesArray[i][1][1] - 3 + "px"; // Assuming the y-coordinate is at index 1[1]
+            this.style.left = coordinatesArray[i][1][0] - 10 + "px"; // Assuming the x-coordinate is at index 1[0]
+            this.style.top = coordinatesArray[i][1][1] - 5 + "px"; // Assuming the y-coordinate is at index 1[1]
             currentSelectedImg = this;
           }
         };
@@ -64,6 +64,7 @@ window.onload = function() {
 
         var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         var routes = document.querySelector('.routes');
+        svg.setAttribute("display", "none");
         svg.setAttribute("width", "1340");
         svg.setAttribute("height", "900");
         routes.appendChild(svg);
