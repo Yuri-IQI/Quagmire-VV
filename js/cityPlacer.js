@@ -14,27 +14,27 @@ window.onload = function() {
         var img = document.createElement("img");
         img.src = imageUrl;
         img.style.position = "absolute";
-        img.style.left = coordinatesArray[i][1][0] - 5 + "px"; // Assuming the x-coordinate is at index 1[0]
-        img.style.top = coordinatesArray[i][1][1] + "px"; // Assuming the y-coordinate is at index 1[1]
-        img.id = coordinatesArray[i][0]; // Assuming the city ID is at index 0
+        img.style.left = coordinatesArray[i][1][0] - 5 + "px";
+        img.style.top = coordinatesArray[i][1][1] - 2 + "px";
+        img.id = coordinatesArray[i][0];
         img.onclick = function() {
           if (currentSelectedImg) {
-            // Check if the clicked city is connected to the currently selected city
+
             if (connections[currentSelectedImg.id] && connections[currentSelectedImg.id].includes(Number(this.id))) {
               currentSelectedImg.style.border = "none";
               this.style.border = "2px dashed darkred";
               this.style.borderRadius = "16px";
               this.style.padding = "2px";
-              this.style.left = coordinatesArray[i][1][0] - 10 + "px"; // Assuming the x-coordinate is at index 1[0]
-              this.style.top = coordinatesArray[i][1][1] - 5 + "px"; // Assuming the y-coordinate is at index 1[1]
+              this.style.left = coordinatesArray[i][1][0] - 9 + "px";
+              this.style.top = coordinatesArray[i][1][1]  - 6 + "px";
               currentSelectedImg = this;
             }
           } else {
             this.style.border = "2px dashed darkred";
             this.style.borderRadius = "16px";
             this.style.padding = "2px";
-            this.style.left = coordinatesArray[i][1][0] - 10 + "px"; // Assuming the x-coordinate is at index 1[0]
-            this.style.top = coordinatesArray[i][1][1] - 5 + "px"; // Assuming the y-coordinate is at index 1[1]
+            this.style.left = coordinatesArray[i][1][0] - 9 + "px";
+            this.style.top = coordinatesArray[i][1][1] - 6 + "px";
             currentSelectedImg = this;
           }
         };
@@ -48,8 +48,8 @@ window.onload = function() {
     .then(data => {
         // Create the connections map
         for (let i = 0; i < data.length; i++) {
-            let cityAId = data[i][0][0]; // Assuming the city ID is at index 0[0]
-            let cityBId = data[i][1][0]; // Assuming the city ID is at index 1[0]
+            let cityAId = data[i][0][0];
+            let cityBId = data[i][1][0];
 
             if (!connections[cityAId]) {
                 connections[cityAId] = [];
@@ -70,8 +70,8 @@ window.onload = function() {
         routes.appendChild(svg);
 
         for (let i = 0; i < data.length; i++) {
-            let pointA = data[i][0][1]; // Assuming the coordinates are at index 0[1]
-            let pointB = data[i][1][1]; // Assuming the coordinates are at index 1[1]
+            let pointA = data[i][0][1];
+            let pointB = data[i][1][1];
 
             var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
             line.setAttribute("x1", pointA[0] - 2);

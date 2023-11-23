@@ -43,21 +43,6 @@ class Routes:
                 self.revised_connections.append(connection)
                     
         return self.revised_connections
-    
-    #def verify(self):
-        for link in self.revised_connections:
-            A = link[0][0]
-            B = link[1][0]
-
-class Travel:
-    def __init__(self):
-        self.path = Routes()
-        self.connections = path.way()
-        self.revised_connections = path.measure()
-
-    def verify(self):
-        for link in self.revised_connections:
-            link = 0
 
 fetcher = Fetcher()
 path = Routes()

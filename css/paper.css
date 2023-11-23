@@ -8,8 +8,9 @@
 }
 
 .table {
-    height: 964px !important;
-    width: 1520px !important;
+    background-size: cover;
+    background-position: center;
+    height: 46cm;
 }
 
 #map_paper {
@@ -24,11 +25,23 @@
     left: 0;
 }
 
+.user_menu {
+    position: relative;
+    top: 25cm;
+    height: 794px;
+    left: 42px;
+
+    img {
+        height: 20cm;
+        width: 20cm;
+    }
+}
+
 #icons {
     position: absolute;
-    top: 26px;
-    left: 84px;
-    width: 1340px;
+    top: 36px;
+    left: 54px;
+    width: 1430px;
     height: 900px;
     outline-color: blue;
 }
