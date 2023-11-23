@@ -25,7 +25,7 @@ class Routes:
     def __init__(self):
         self.cities = []
         self.connections = []
-        self.revised_connections = []
+        self.measured_connections = []
     
     def way(self):
         for i in range(len(self.cities)):
@@ -39,28 +39,26 @@ class Routes:
             B = connection[1][1]
             length = math.sqrt((B[0] - A[0])**2 + (B[1] - A[1])**2)
 
-            if length < 110:
-                self.revised_connections.append(connection)
+            if length < 105:
+                self.measured_connections.append(connection)
                     
-        return self.revised_connections
+        return self.measured_connections
 
 fetcher = Fetcher()
 path = Routes()
 
-coordenadas = []
-for id, coordenada in fetcher.fetch("SELECT id, coords FROM cities"):
-    path.cities.append([id, coordenada])
-    coordenadas.append([id, coordenada])
+for id, coordenada, nome, região in fetcher.fetch("SELECT id, coords, nomes, regiões FROM cities"):
+    path.cities.append([id, coordenada, nome, região])
 
 @app.route('/get_coordinates', methods=['GET'])
 def get_coordinates():
-    return jsonify(coordenadas)
+    return jsonify(path.cities)
 
-@app.route('/get_revised_connections', methods=['GET'])
-def get_revised_connections():
+@app.route('/get_measured_connections', methods=['GET'])
+def get_measured_connections():
     path.way()
-    revised_connections = path.measure()
-    return jsonify(revised_connections)
+    measured_connections = path.measure()
+    return jsonify(measured_connections)
 
 if __name__ == '__main__':
     app.run(debug=True)

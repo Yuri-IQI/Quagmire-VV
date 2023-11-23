@@ -5,9 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quagmire</title>
     <link rel="stylesheet" type="text/css" href="css/paper.css">
+    <style>
+    @font-face {
+        font-family: 'Hardinge';
+        src: url('Fonts/hardinge/Hardinge Free Trial.woff');
+    }
+    
+    @font-face {
+        font-family: 'Rosemary';
+        src: url('Fonts/rosemary-cufonfonts-webfont/Rosemary.woff');
+    }
+
+    @font-face {
+        font-family: 'Humanistic';
+        src: url('Fonts/humanistic/Humanistic.ttf');
+    }
+    
+    @font-face {
+        font-family: 'FantaisieArtistique';
+        src: url('Fonts/fantaisieartistique/FantaisieArtistique.ttf');
+    }
+    </style>
 </head>
-<body>
-    <section class="table" style="background-image: url(Imagens/Textura_Mesa.jpg);">
+<body style="background-image: url(Imagens/Textura_Mesa.jpg);">
+    <section class="table">
         <div class="map_board">
             <div id="map_paper">
                 <img src="Imagens/Textura_papel_recortada.png" alt="Textura_papel_recortada">
@@ -19,14 +40,18 @@
                 <img class="map_element" src="Imagens/Imagem_estradas_1.png" alt="estradas">
             </div>
         </div>
-        <div class="user_menu">
-            <img src="Imagens/menu_cidade.png" alt="textura_menu_usuário">
+        <div class="menu">
+            <div class="user_menu">
+                <p id="city_name"></p>
+                <p id="city_region"></p>
+                <img src="Imagens/menu_cidade.png" alt="textura_menu_usuário">
+            </div>
         </div>
     </section>
-    <div class="routes">
+    <div class="routes" style="display: none;">
     </div>
     <div class="pins" id="icons" onclick="getCoordinates(event)"></div>
-    <p id="coordinates"></p>
+    <p id="coordinates" style="display: none;"></p>
     <script src="js/cityPlacer.js"></script>
 </body>
 </html>

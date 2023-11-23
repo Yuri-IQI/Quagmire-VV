@@ -1,6 +1,7 @@
 var coordinatesArray = [];
 var imageUrl = "Imagens/Icone_cidade.svg";
 var currentSelectedImg = null;
+var currentSelectedCity = null;
 var connections = {};
 
 window.onload = function() {
@@ -14,9 +15,10 @@ window.onload = function() {
         var img = document.createElement("img");
         img.src = imageUrl;
         img.style.position = "absolute";
-        img.style.left = coordinatesArray[i][1][0] - 5 + "px";
-        img.style.top = coordinatesArray[i][1][1] - 2 + "px";
+        img.style.left = coordinatesArray[i][1][0] - 7 + "px";
+        img.style.top = coordinatesArray[i][1][1] - 6.5 + "px";
         img.id = coordinatesArray[i][0];
+        img.alt = coordinatesArray[i][2]
         img.onclick = function() {
           if (currentSelectedImg) {
 
@@ -25,16 +27,22 @@ window.onload = function() {
               this.style.border = "2px dashed darkred";
               this.style.borderRadius = "16px";
               this.style.padding = "2px";
-              this.style.left = coordinatesArray[i][1][0] - 9 + "px";
-              this.style.top = coordinatesArray[i][1][1]  - 6 + "px";
+              this.style.left = coordinatesArray[i][1][0] - 4.6 - 7 + "px";
+              this.style.top = coordinatesArray[i][1][1]  - 2.8 - 6 + "px";
+              currentSelectedCity = this.alt;
+              document.getElementById("city_name").innerHTML = currentSelectedCity;
+              document.getElementById("city_region").innerHTML = coordinatesArray[i][3];
               currentSelectedImg = this;
             }
           } else {
             this.style.border = "2px dashed darkred";
             this.style.borderRadius = "16px";
             this.style.padding = "2px";
-            this.style.left = coordinatesArray[i][1][0] - 9 + "px";
-            this.style.top = coordinatesArray[i][1][1] - 6 + "px";
+            this.style.left = coordinatesArray[i][1][0] - 4.6 - 7 + "px";
+            this.style.top = coordinatesArray[i][1][1] - 2.8 - 6 + "px";
+            currentSelectedCity = this.alt;
+            document.getElementById("city_name").innerHTML = currentSelectedCity;
+            document.getElementById("city_region").innerHTML = coordinatesArray[i][3];
             currentSelectedImg = this;
           }
         };
@@ -43,10 +51,9 @@ window.onload = function() {
       }
     });
 
-    fetch('http://127.0.0.1:5000/get_revised_connections')
+    fetch('http://127.0.0.1:5000/get_measured_connections')
     .then(response => response.json())
     .then(data => {
-        // Create the connections map
         for (let i = 0; i < data.length; i++) {
             let cityAId = data[i][0][0];
             let cityBId = data[i][1][0];
@@ -64,8 +71,7 @@ window.onload = function() {
 
         var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         var routes = document.querySelector('.routes');
-        svg.setAttribute("display", "none");
-        svg.setAttribute("width", "1340");
+        svg.setAttribute("width", "1430");
         svg.setAttribute("height", "900");
         routes.appendChild(svg);
 
@@ -74,10 +80,10 @@ window.onload = function() {
             let pointB = data[i][1][1];
 
             var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-            line.setAttribute("x1", pointA[0] - 2);
-            line.setAttribute("y1", pointA[1] - 2);
-            line.setAttribute("x2", pointB[0] - 2);
-            line.setAttribute("y2", pointB[1] - 2);
+            line.setAttribute("x1", pointA[0]);
+            line.setAttribute("y1", pointA[1]);
+            line.setAttribute("x2", pointB[0]);
+            line.setAttribute("y2", pointB[1]);
             line.setAttribute("stroke-width", "2");
             line.setAttribute("stroke", "black");
             svg.appendChild(line);
