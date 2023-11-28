@@ -4,55 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quagmire</title>
-    <link rel="stylesheet" type="text/css" href="css/paper.css">
-    <style>
-    @font-face {
-        font-family: 'Hardinge';
-        src: url('Fonts/hardinge/Hardinge Free Trial.woff');
-    }
-    
-    @font-face {
-        font-family: 'Rosemary';
-        src: url('Fonts/rosemary-cufonfonts-webfont/Rosemary.woff');
-    }
-
-    @font-face {
-        font-family: 'Humanistic';
-        src: url('Fonts/humanistic/Humanistic.ttf');
-    }
-    
-    @font-face {
-        font-family: 'FantaisieArtistique';
-        src: url('Fonts/fantaisieartistique/FantaisieArtistique.ttf');
-    }
-    </style>
+    <link rel="stylesheet" type="text/css" href="assets/css/paper.css">
 </head>
-<body style="background-image: url(Imagens/Textura_Mesa.jpg);">
+<body>
     <section class="table">
         <div class="map_board">
-            <div id="map_paper">
-                <img src="Imagens/Textura_papel_recortada.png" alt="Textura_papel_recortada">
-                <img class="map_element" src="Imagens/Imagem_costa.png" alt="costa">
-                <img class="map_element" src="Imagens/Imagem_mar.png" alt="mar">
-                <img class="map_element" src="Imagens/Imagem_terreno.png" alt="terreno">
-                <img class="map_element" src="Imagens/Imagem_montanhas.png" alt="montanhas">
-                <img class="map_element" src="Imagens/Imagem_rios.png" alt="rios">
-                <img class="map_element" src="Imagens/Imagem_estradas_1.png" alt="estradas">
+            <div id="map_paper" onclick="getCoordinates(event)">
+                <img class="map_element" src="assets/Imagens/Textura_papel_recortada.png" alt="Textura_papel_recortada">
+                <img class="map_element" src="assets/Imagens/Imagem_costa.png" alt="costa">
+                <img class="map_element" src="assets/Imagens/Imagem_mar.png" alt="mar">
+                <img class="map_element" src="assets/Imagens/Imagem_terreno.png" alt="terreno">
+                <img class="map_element" src="assets/Imagens/Imagem_montanhas.png" alt="montanhas">
+                <img class="map_element" src="assets/Imagens/Imagem_rios.png" alt="rios">
+                <img class="map_element" src="assets/Imagens/Imagem_estradas_1.png" alt="estradas">
+                <div class="pins" id="icons"></div>
             </div>
         </div>
         <div class="menu">
-            <div class="user_menu">
-                <p id="city_name"></p>
-                <p id="city_region"></p>
-                <img src="Imagens/menu_cidade.png" alt="textura_menu_usuário">
+            <div class="city_menu">
+                <div class="city_info">
+                    <p id="city_name"></p>
+                    <p id="city_region"></p>
+                </div>
+                <div class="market">
+                    <div class="product_info">
+                        <div class="product_data"><p>Nome</p><p>Preço: 9,99</p></div>
+                        <div class="product_access"><input type="text" id="quantity" name="quantity" placeholder="Quantity"><button type="submit">Buy</button></div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
-    <div class="routes" style="display: none;">
-    </div>
-    <div class="pins" id="icons" onclick="getCoordinates(event)"></div>
+    <div class="routes" style="display: none;"></div>
     <p id="coordinates" style="display: none;"></p>
-    <script src="js/cityPlacer.js"></script>
+    <script src="assets/js/cityPlacer.js"></script>
 </body>
 </html>
 

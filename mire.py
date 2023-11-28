@@ -39,7 +39,7 @@ class Routes:
             B = connection[1][1]
             length = math.sqrt((B[0] - A[0])**2 + (B[1] - A[1])**2)
 
-            if length < 105:
+            if length < 108:
                 self.measured_connections.append(connection)
                     
         return self.measured_connections

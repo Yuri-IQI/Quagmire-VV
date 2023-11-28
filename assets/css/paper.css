@@ -1,0 +1,171 @@
+@font-face {
+    font-family: 'Hardinge';
+    src: url('../Fonts/hardinge/Hardinge Free Trial.woff');
+}
+
+@font-face {
+    font-family: 'Rosemary';
+    src: url('../Fonts/rosemary-cufonfonts-webfont/Rosemary.woff');
+}
+
+@font-face {
+    font-family: 'Humanistic';
+    src: url('../Fonts/humanistic/Humanistic.ttf');
+}
+
+@font-face {
+    font-family: 'FantaisieArtistique';
+    src: url('../Fonts/fantaisieartistique/FantaisieArtistique.ttf');
+}
+
+body {
+    background-size: cover;
+    background-position: center;
+    background-image: url(../Imagens/Textura_Mesa.jpg);
+    display: grid;
+    grid-template-areas: 
+        "map_board"
+        "menu";
+}
+
+.table {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.map_board {
+    grid-area: map_board;
+    position: relative; /* Add this line */
+}
+
+#map_paper {
+    display: grid;
+    height: 24cm; /* Add this line */
+    width: 38cm; /* Add this line */
+}
+
+#map_paper img {
+    height: 100%; /* Change this line */
+    width: 100%; /* Change this line */
+}
+
+.map_element {
+    grid-area: map_board;
+}
+
+.menu {
+	grid-area: menu;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 794px;
+}
+
+.menu .city_menu {
+	display: flex;
+	height: 730px;
+	width: 704px;
+	background-image: url(../Imagens/menu_cidade.png);
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.city_info {
+	display: flex;
+	align-items: flex-end;
+	height: 28%;
+	justify-content: space-around;
+	width: 80%;
+    text-align: center;
+}
+
+.city_info p {
+	font-family: 'FantaisieArtistique', 'Hardinge', sans-serif;
+	font-size: 40pt;
+    width: 100%;
+}
+
+.market {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	grid-template-rows: repeat(2, 1fr);
+	gap: 10px;
+	width: 72%;
+	height: 42vh;
+	overflow: auto;
+}
+
+.product_info {
+	padding: 8px;
+	height: 52%;
+}
+
+.product_data {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: row;
+	font-family: 'Humanistic';
+}
+
+.product_data p {
+	margin: 0 0 12px 0px;
+	font-size: 20pt;
+    text-shadow: 2px 2px 2px #00000063;
+}
+
+.product_access {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-family: 'Rosemary';
+}
+
+.product_access input {
+	display: flex;
+	flex-direction: row;
+	height: 64%;
+	justify-content: center;
+	align-items: center;
+	height: 20px;
+	background-color: #0000000f;
+	font-family: 'Humanistic';
+	font-size: 14pt;
+    text-shadow: 2px 2px 2px #00000063;
+}
+
+.product_access button {
+	font-family: 'Humanistic';
+	font-size: 14pt;
+	border: 2px dashed #6e6e6e;
+	border-radius: 12px;
+	background-color: #bab57b4f;
+    text-shadow: 2px 2px 2px #00000063;
+}
+
+#icons {
+    grid-area: map_board;
+    height: 100%;
+    width: 100%;
+}
+
+#icons img {
+    opacity: 90%;
+    position: absolute;
+    height: auto;
+    width: auto;
+    transform: translate(-50%, -50%);
+}
+
+.icon {
+    grid-area: map_board;
+}
+
+svg {
+    opacity: 60%;
+}
