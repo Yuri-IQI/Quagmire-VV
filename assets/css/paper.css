@@ -79,7 +79,7 @@ body {
 .city_info {
 	display: flex;
 	align-items: flex-end;
-	height: 28%;
+	height: 34vh;
 	justify-content: space-around;
 	width: 80%;
     text-align: center;
@@ -96,6 +96,13 @@ body {
 	grid-template-columns: repeat(2, 1fr);
 	grid-template-rows: repeat(2, 1fr);
 	gap: 10px;
+	width: 72%;
+	height: 40vh;
+	overflow: auto;
+}
+
+.guild {
+	display: grid;
 	width: 72%;
 	height: 42vh;
 	overflow: auto;
@@ -146,6 +153,7 @@ body {
 	border-radius: 12px;
 	background-color: #bab57b4f;
     text-shadow: 2px 2px 2px #00000063;
+    cursor: pointer;
 }
 
 #icons {

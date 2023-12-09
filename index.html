@@ -9,7 +9,7 @@
 <body>
     <section class="table">
         <div class="map_board">
-            <div id="map_paper" onclick="getCoordinates(event)">
+            <div id="map_paper">
                 <img class="map_element" src="assets/Imagens/Textura_papel_recortada.png" alt="Textura_papel_recortada">
                 <img class="map_element" src="assets/Imagens/Imagem_costa.png" alt="costa">
                 <img class="map_element" src="assets/Imagens/Imagem_mar.png" alt="mar">
@@ -27,18 +27,17 @@
                     <p id="city_region"></p>
                 </div>
                 <div class="market">
-                    <div class="product_info">
-                        <div class="product_data"><p>Nome</p><p>Preço: 9,99</p></div>
-                        <div class="product_access"><input type="text" id="quantity" name="quantity" placeholder="Quantity"><button type="submit">Buy</button></div>
-                    </div>
+                </div>
+                <div class="guild">
                 </div>
             </div>
         </div>
     </section>
     <div class="routes" style="display: none;"></div>
     <p id="coordinates" style="display: none;"></p>
-    <script src="assets/js/cityPlacer.js"></script>
+    <script src="assets/js/carta.js"></script>
 </body>
 </html>
 
-<!--Map scale = i have no idea-->
+<!--Map scale = 1:60.000.000-->
+<!--As of 24cm X 38cm-->
