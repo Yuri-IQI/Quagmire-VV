@@ -9,35 +9,43 @@
 <body>
     <section class="table">
         <div class="map_board">
-            <div id="map_paper">
-                <img class="map_element" src="assets/Imagens/Textura_papel_recortada.png" alt="Textura_papel_recortada">
-                <img class="map_element" src="assets/Imagens/Imagem_costa.png" alt="costa">
-                <img class="map_element" src="assets/Imagens/Imagem_mar.png" alt="mar">
-                <img class="map_element" src="assets/Imagens/Imagem_terreno.png" alt="terreno">
-                <img class="map_element" src="assets/Imagens/Imagem_montanhas.png" alt="montanhas">
-                <img class="map_element" src="assets/Imagens/Imagem_rios.png" alt="rios">
-                <img class="map_element" src="assets/Imagens/Imagem_estradas_1.png" alt="estradas">
-                <div class="pins" id="icons"></div>
+            <div id="map_paper" class="resizable">
+                <div class="holdable"></div>
+                <img class="map_element" src="assets/Img/Textura_papel_recortada.png" alt="Textura_papel_recortada">
+                <img class="map_element" src="assets/Img/Imagem_costa.png" alt="costa">
+                <img class="map_element" src="assets/Img/Imagem_mar.png" alt="mar">
+                <img class="map_element" src="assets/Img/Imagem_terreno.png" alt="terreno">
+                <img class="map_element" src="assets/Img/Imagem_montanhas.png" alt="montanhas">
+                <img class="map_element" src="assets/Img/Imagem_rios.png" alt="rios">
+                <img class="map_element" src="assets/Img/Imagem_estradas_1.png" alt="estradas">
+                <div class="pins map_element" id="icons"></div>
+                <div class="routes"></div>
             </div>
         </div>
         <div class="menu">
-            <div class="city_menu">
+            <div class="city_menu resizable">
+                <div class="holdable"></div>
                 <div class="city_info">
                     <p id="city_name"></p>
                     <p id="city_region"></p>
-                </div>
+                </div>                
                 <div class="market">
                 </div>
-                <div class="guild">
+            </div>
+            <div class="user_menu resizable">
+                <div class="holdable"></div>
+                <div class="user_info">
+                    <p id="user_wallet"></p>
+                </div>
+                <div class="cart">
                 </div>
             </div>
         </div>
     </section>
-    <div class="routes" style="display: none;"></div>
     <p id="coordinates" style="display: none;"></p>
-    <script src="assets/js/carta.js"></script>
+    <script type="module" src="assets/js/carta.js"></script>
 </body>
 </html>
 
-<!--Map scale = 1:60.000.000-->
-<!--As of 24cm X 38cm-->
+<!--Map scale = 1:600.000.000-->
+<!--As of 24cm X 38cm | 908px x 1436px-->

@@ -38,12 +38,17 @@ class Routes:
         for connection in self.connections:
             A = connection[0][1]
             B = connection[1][1]
-            length = math.sqrt((B[0] - A[0])**2 + (B[1] - A[1])**2)
 
-            if length < 108:
+            A_real = [962 - ((A[0]/100) * 962), 554 - ((A[1]/100) * 554)]
+            B_real = [962 - ((B[0]/100) * 962), 554 - ((B[1]/100) * 554)]
+
+            length_real = math.sqrt((B_real[0] - A_real[0])**2 + (B_real[1] - A_real[1])**2)
+
+            if length_real < 71:
                 self.measured_connections.append(connection)
-                    
+                        
         return self.measured_connections
+
     
     def visualize(self):
         for connection in self.measured_connections:
@@ -76,18 +81,17 @@ class Product:
 
     def organize_categories(self):
         organized_goods = sorted(self.goods_info, key=lambda x: x[3])
-        print(organized_goods)
 
 fetcher = Fetcher()
 path = Routes()
 city = City()
 product = Product()
 
-for id_city, coordenada, nome, região in fetcher.fetch("SELECT id, coords, nomes, regiões FROM cities"):
+for id_city, nome, região, coordenada in fetcher.fetch("SELECT id, nomes, regiões, coords FROM cities"):
     path.cities.append([id_city, coordenada, nome, região])
 
-for id_goods, goods, price, category in fetcher.fetch("SELECT id, produtos, preço, categoria FROM goods"):
-    product.goods_info.append((id_goods, goods, float(price), category))
+for id_goods, goods, price, category, cities in fetcher.fetch("SELECT id, produtos, preço, categoria, cidades FROM goods"):
+    product.goods_info.append((id_goods, goods, float(price), category, cities))
 
 product.organize_categories()
 path.way()
@@ -98,12 +102,8 @@ city.scale_city(established_connections)
 
 @app.route('/get_connections', methods=['GET'])
 def get_connections():
-    pack = [measured_connections, established_connections, path.cities]
+    pack = [measured_connections, established_connections, path.cities, product.goods_info]
     return jsonify(pack)
-
-@app.route('/get_goods', methods=['GET'])
-def get_goods():
-    return jsonify(product.goods_info)
 
 if __name__ == '__main__':
     app.run(debug=True)
