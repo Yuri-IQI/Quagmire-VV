@@ -132,6 +132,7 @@ body {
 	width: 90%;
 	justify-content: flex-start;
 	text-align: left;
+	padding: 8px;
 }
 
 .user_info p {

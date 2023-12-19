@@ -119,9 +119,6 @@ export function initDragElement() {
     pos3 = e.clientX;
     pos4 = e.clientY;
 
-    console.log(e.clientX);
-    console.log(e.clientY);
-
     document.onmouseup = closeDragElement;
     // call a function whenever the cursor moves:
     document.onmousemove = elementDrag;
@@ -143,11 +140,6 @@ export function initDragElement() {
     // set the element's new position:
     elmnt.style.top = elmnt.offsetTop - pos2 + "px";
     elmnt.style.left = elmnt.offsetLeft - pos1 + "px";
-
-    console.log(pos1);
-    console.log(pos2);
-    console.log(elmnt.style.top);
-    console.log(elmnt.style.left);
   }
 
   function closeDragElement() {

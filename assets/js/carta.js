@@ -153,7 +153,7 @@ class CityHandler {
                 document.getElementById("city_name").innerHTML = this.currentSelectedCity;
                 document.getElementById("city_region").innerHTML = coordinatesArray[i][3];
                 this.citySheet.organizeMarket(town.id, this.currentSelectedCity);
-                this.userSheet.fillUserSheet([town.id, this.currentSelectedCity]);
+                this.userSheet.fillUserSheet([town.id, this.currentSelectedCity], true);
                 this.currentSelectedCity = town;
             }
         } else {
@@ -177,6 +177,7 @@ class UserSheet {
         this.walletDisplay = document.getElementById('user_wallet');
         this.cart = [];
         this.cityPrices = {};
+        this.currentCity = null;
     }
 
     createWallet() {
@@ -199,13 +200,10 @@ class UserSheet {
                 this.cart.push(productWithQuantity);
             }
         } 
-        this.fillUserSheet(currentCity)
-        console.log(this.cart);
-        console.log(this.wallet);
-        console.log(cityGoods[productId][2]);
+        this.fillUserSheet(currentCity, false)
     }
 
-    fillUserSheet(currentCity) {
+    fillUserSheet(currentCity, reajust) {
         this.createWallet()
 
         const cartSpace = document.querySelector('.cart');
@@ -213,18 +211,13 @@ class UserSheet {
     
         this.cart.forEach((item, i) => {
             let price;
-            if (this.cityPrices[currentCity] && this.cityPrices[currentCity][item[1]]) {
-                price = this.cityPrices[currentCity][item[1]];
+            if (reajust || typeof this.cityPrices[currentCity] === 'undefined' || !this.cityPrices[currentCity].hasOwnProperty(item[1])) {
+                price = this.calculateSellingPrices(item, currentCity);
+                this.currentCity = currentCity;
             } else {
-                price = item[2];
-                const randomValue = Math.random() / 10;
-                price *= item[4].includes(Number(currentCity[0])) ? 1 - randomValue : 1 + randomValue;
-                if (!this.cityPrices[currentCity]) {
-                    this.cityPrices[currentCity] = {};
-                }
-                this.cityPrices[currentCity][item[1]] = price;
+                price = this.cityPrices[currentCity][item[1]].price;
             }
-    
+
             const cartItemDiv = document.createElement('div');
             cartItemDiv.className = 'cart_item';
             cartItemDiv.id = `cart_item_${i}`;
@@ -253,7 +246,6 @@ class UserSheet {
     
     sellGood(price, availableQuantity, item, currentCity) {
         const soldQuantity = Number(document.getElementById(`sellQuantity_${item}`).value);
-        const itemSlot = document.getElementById(`cart_item_${item}`);
         const qt = document.getElementById(`qt_${item}`);
     
         if (soldQuantity > availableQuantity) {
@@ -269,6 +261,34 @@ class UserSheet {
             }
             this.createWallet();
         }
+    }
+
+    calculateSellingPrices(item, currentCity) {
+        const randomValue = Math.random() / 10;
+        let adjustmentFactor = item[4].includes(Number(currentCity[0])) ? 1 - randomValue : 1 + randomValue;
+    
+        adjustmentFactor = Math.max(0.9, Math.min(1.1, adjustmentFactor));
+    
+        if (!this.cityPrices[currentCity]) {
+            this.cityPrices[currentCity] = {};
+        }
+    
+        if (!this.cityPrices[currentCity][item[1]]) {
+            this.cityPrices[currentCity][item[1]] = {price: item[2], count: 0};
+        }
+    
+        let price;
+        if (this.cityPrices[currentCity][item[1]].count > 0) {
+            adjustmentFactor = Math.max(0.95, Math.min(1.05, adjustmentFactor));
+            price = item[2] * adjustmentFactor;
+        } else {
+            price = item[2] * adjustmentFactor;
+        }
+        
+        this.cityPrices[currentCity][item[1]].price = price;
+        this.cityPrices[currentCity][item[1]].count += 1;
+    
+        return price;
     }
 }
 
