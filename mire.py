@@ -11,7 +11,7 @@ class Fetcher:
         self.connection = psycopg2.connect(
             database="Quagmire",
             user="postgres",
-            password="Yuri.0025",
+            password="12345",
             host="localhost",
             port="5432"
         )
