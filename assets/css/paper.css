@@ -49,7 +49,7 @@ body {
 	height: 420px;
 	min-width: 580px;
 	min-height: 260px;
-	overflow: auto;
+	overflow: clip;
 }
 
 #map_paper img {
@@ -103,8 +103,6 @@ body {
 	grid-area: map_board;
 	min-width: 580px;
 	min-height: 260px;
-	scale: calc(0.1 * 10);
-	transform-origin: left top;
 }
 
 .menu {
@@ -236,6 +234,7 @@ body {
 	font-family: 'FantaisieArtistique', 'Hardinge', sans-serif;
 	font-size: calc(32px + 2vmin);
 	margin: 0;
+	z-index: 11;
 }
 
 

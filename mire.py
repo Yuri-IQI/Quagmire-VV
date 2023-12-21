@@ -27,6 +27,7 @@ class Routes:
         self.connections = []
         self.measured_connections = []
         self.established_connections = {}
+        self.routes_length = []
     
     def way(self):
         for i in range(len(self.cities)):
@@ -46,8 +47,9 @@ class Routes:
 
             if length_real < 71:
                 self.measured_connections.append(connection)
-                        
-        return self.measured_connections
+                self.routes_length.append([[(A, connection[0][0]), (B, connection[1][0])], length_real])
+
+        return self.measured_connections, self.routes_length
 
     
     def visualize(self):
@@ -95,14 +97,14 @@ for id_goods, goods, price, category, cities in fetcher.fetch("SELECT id, produt
 
 product.organize_categories()
 path.way()
-measured_connections = path.measure()
+measured_connections, routes_lenght = path.measure()
 established_connections = path.visualize()
 
 city.scale_city(established_connections)
 
 @app.route('/get_connections', methods=['GET'])
 def get_connections():
-    pack = [measured_connections, established_connections, path.cities, product.goods_info]
+    pack = [measured_connections, established_connections, path.cities, product.goods_info, routes_lenght]
     return jsonify(pack)
 
 if __name__ == '__main__':

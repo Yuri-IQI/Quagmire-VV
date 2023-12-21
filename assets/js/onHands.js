@@ -159,6 +159,72 @@ export function initDragElement() {
   }
 }
 
+export class zoomInMap {
+  constructor() {
+      this.cityRegion = document.querySelector('#city_region');
+      this.mapPaper = document.querySelector('#map_paper');
+      this.mapElements = document.querySelectorAll('.map_element');
+      this.isZoomed = false;
+      this.isDragging = false;
+      this.startX = 0;
+      this.startY = 0;
+  }
+
+  activateZoom() {
+      this.cityRegion.addEventListener('click', () => {
+          this.mapElements.forEach((mapElement) => {
+              if (!this.isZoomed) {
+                  mapElement.style.transform = 'scale(calc(0.1 * 45))';
+                  mapElement.style.transformOrigin = `26% 96%`;
+              } else {
+                  mapElement.style.transform = '';
+                  mapElement.style.transformOrigin = '';
+              }
+          });
+          if (!this.isZoomed) {
+              this.mapPaper.style.cursor = 'grab';
+          } else {
+              this.mapPaper.style.cursor = '';
+          }
+          this.isZoomed = !this.isZoomed;
+      });
+  }
+
+  activateDrag() {
+      this.mapPaper.addEventListener('mousedown', (e) => {
+          this.startX = e.clientX;
+          this.startY = e.clientY;
+          this.isDragging = true;
+      });
+
+      this.mapPaper.addEventListener('mousemove', (e) => {
+          if (this.isZoomed && this.isDragging) {
+              let dx = e.clientX - this.startX;
+              let dy = e.clientY - this.startY;
+              this.mapPaper.style.cursor = 'grabbing';
+
+              this.mapElements.forEach((mapElement) => {
+                  let origin = mapElement.style.transformOrigin.split(' ');
+                  let x = parseFloat(origin[0]) - dx * 0.005;
+                  let y = parseFloat(origin[1]) - dy * 0.005;
+
+                  // Ensure x is within [5.85, 93.27]
+                  x = Math.max(5.85, Math.min(93.27, x));
+                  // Ensure y is within [3.6, 96.54]
+                  y = Math.max(3.6, Math.min(96.54, y));
+
+                  mapElement.style.transformOrigin = `${x}% ${y}%`;
+              });
+              this.mapPaper.style.cursor = 'grab';
+          }
+      });
+
+      this.mapPaper.addEventListener('mouseup', () => {
+          this.isDragging = false;
+      });
+  }
+}
+
 //get map coordinates
 /*var allCoordinates = [];
 export function getCoordinates(event) {

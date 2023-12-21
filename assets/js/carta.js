@@ -1,4 +1,4 @@
-import { initResizeElement, initDragElement } from './onHands.js';
+import { initResizeElement, initDragElement, zoomInMap} from './onHands.js';
 
 class Fetcher {
     constructor() {
@@ -300,7 +300,8 @@ window.onload = async function() {
         var connections = data[1];
         var coordinatesArray = data[2];
         var products = data[3];
-        return { measures, connections, coordinatesArray, products };
+        var routesLenght = data[4]
+        return { measures, connections, coordinatesArray, products, routesLenght };
     });
     
     const userSheet = new UserSheet();
@@ -318,3 +319,7 @@ window.onload = async function() {
     initDragElement();
     initResizeElement();
 }
+
+var zoom = new zoomInMap();
+zoom.activateZoom();
+zoom.activateDrag();
