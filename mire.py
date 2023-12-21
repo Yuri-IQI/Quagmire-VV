@@ -102,6 +102,8 @@ established_connections = path.visualize()
 
 city.scale_city(established_connections)
 
+print(product.goods_info)
+
 @app.route('/get_connections', methods=['GET'])
 def get_connections():
     pack = [measured_connections, established_connections, path.cities, product.goods_info, routes_lenght]
