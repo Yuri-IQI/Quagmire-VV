@@ -94,7 +94,7 @@ class CitySheetBuilder {
 
 class CityHandler {
     constructor(citySheet, userSheet) {
-        this.cityIcon = 'assets/Img/icone_cidade.svg';
+        this.cityIcon = 'assets/Img/icone_cidade.png';
         this.currentSelectedCity = null;
         this.iconsDiv = document.getElementById("icons");
         this.citySheet = citySheet;
