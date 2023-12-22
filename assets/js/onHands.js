@@ -176,9 +176,21 @@ export class zoomInMap {
               if (!this.isZoomed) {
                   mapElement.style.transform = 'scale(calc(0.1 * 45))';
                   mapElement.style.transformOrigin = `26% 96%`;
+                  this.mapPaper.style.cssText = `
+                      -webkit-mask-image: url('assets/Img/border.svg');
+                      -webkit-mask-repeat: no-repeat;
+                      -webkit-mask-position: center;
+                      -webkit-mask-size: 100% 100%;
+                      mask-image: url('assets/Img/border.svg');
+                      mask-repeat: no-repeat;
+                      mask-position: center;
+                      mask-size: 100% 100%;
+                      mask-border: url('assets/Img/border.svg') 30 / 1 / 0 stretch;
+                  `;
               } else {
                   mapElement.style.transform = '';
                   mapElement.style.transformOrigin = '';
+                  this.mapPaper.style.cssText = '';
               }
           });
           if (!this.isZoomed) {

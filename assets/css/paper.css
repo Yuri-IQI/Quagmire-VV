@@ -45,12 +45,16 @@ body {
 
 #map_paper {
 	display: grid;
-	width: 760px;
-	height: 420px;
+	z-index: 117;
+	top: 12px;
+	left: 616px;
+	width: 864px;
+	height: 418px;
 	min-width: 580px;
 	min-height: 260px;
 	overflow: clip;
 }
+  
 
 #map_paper img {
     height: inherit;
@@ -121,6 +125,11 @@ body {
 	justify-content: flex-start;
 	min-width: 270px;
 	min-height: 220px;
+	z-index: 105;
+	top: 455px;
+	left: 742px;
+	width: 449px;
+	height: 332px;
 }
 
 .user_info {
@@ -217,16 +226,19 @@ body {
 	justify-content: flex-start;
 	min-width: 532px;
 	min-height: 340px;
+	top: 23px;
+	left: 9px;
+	width: 520px;
+	height: 720px;
 }
 
 .city_info {
 	display: flex;
 	align-items: center;
-	justify-content: space-evenly;
-	right: wrap;
+	justify-content: space-between;
 	flex-direction: row;
-	max-height: 45%;
-	min-height: 25%;
+	max-height: 47%;
+	min-height: 27%;
 	width: 80%;
 }
 
@@ -237,6 +249,9 @@ body {
 	z-index: 11;
 }
 
+#city_region {
+	margin-right: 5%;
+}
 
 .market {
 	display: grid;
