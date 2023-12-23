@@ -7,5 +7,7 @@ The functional-front branch doesn't use the python file run, some of the data th
 ## Actions
 
 >Drag paper: Shift + Hold top of the paper
+>
 >Resize: R + Hold bottom or right corner of the paper
+>
 >Zoom mode: Click in city region (Siourin)
