@@ -94,7 +94,7 @@ class CitySheetBuilder {
 
 class CityHandler {
     constructor(citySheet, userSheet) {
-        this.cityIcon = "assets/Img/Icone_cidade.svg";
+        this.cityIcon = 'assets/Img/icone_cidade.svg';
         this.currentSelectedCity = null;
         this.iconsDiv = document.getElementById("icons");
         this.citySheet = citySheet;
@@ -292,29 +292,24 @@ class UserSheet {
     }
 }
 
-window.onload = async function() {
-    const fetcher = new Fetcher();
+var measures = [[[7, [39.28, 86.8], 'Lyafssarth', 'Siourin'], [8, [37.8, 79.3], 'Bryssdeith', 'Siourin']], [[7, [39.28, 86.8], 'Lyafssarth', 'Siourin'], [5, [35.72, 84.97], 'Alcirouth', 'Siourin']], [[8, [37.8, 79.3], 'Bryssdeith', 'Siourin'], [5, [35.72, 84.97], 'Alcirouth', 'Siourin']], [[8, [37.8, 79.3], 'Bryssdeith', 'Siourin'], [4, [31.18, 81.7], 'Zouvien', 'Siourin']], [[1, [24.2, 92.5], 'Irith', 'Siourin'], [3, [24.65, 83.2], 'Haeickssa', 'Siourin']], [[1, [24.2, 92.5], 'Irith', 'Siourin'], [2, [31.0, 88.5], 'Saebaran', 'Siourin']], [[3, [24.65, 83.2], 'Haeickssa', 'Siourin'], [2, [31.0, 88.5], 'Saebaran', 'Siourin']], [[3, [24.65, 83.2], 'Haeickssa', 'Siourin'], [4, [31.18, 81.7], 'Zouvien', 'Siourin']], [[5, [35.72, 84.97], 'Alcirouth', 'Siourin'], [2, [31.0, 88.5], 'Saebaran', 'Siourin']], [[5, [35.72, 84.97], 'Alcirouth', 'Siourin'], [4, [31.18, 81.7], 'Zouvien', 'Siourin']], [[5, [35.72, 84.97], 'Alcirouth', 'Siourin'], [6, [32.8, 94.3], 'Driezmaran', 'Siourin']], [[2, [31.0, 88.5], 'Saebaran', 'Siourin'], [4, [31.18, 81.7], 'Zouvien', 'Siourin']], [[2, [31.0, 88.5], 'Saebaran', 'Siourin'], [6, [32.8, 94.3], 'Driezmaran', 'Siourin']]];
+var connections = {7: [8, 5], 8: [7, 5, 4], 5: [7, 8, 2, 4, 6], 4: [8, 3, 5, 2], 1: [3, 2], 3: [1, 2, 4], 2: [1, 3, 5, 4, 6], 6: [5, 2]};
+var coordinatesArray = [[7, [39.28, 86.8], 'Lyafssarth', 'Siourin'], [8, [37.8, 79.3], 'Bryssdeith', 'Siourin'], [1, [24.2, 92.5], 'Irith', 'Siourin'], [3, [24.65, 83.2], 'Haeickssa', 'Siourin'], [5, [35.72, 84.97], 'Alcirouth', 'Siourin'], [2, [31.0, 88.5], 'Saebaran', 'Siourin'], [4, [31.18, 81.7], 'Zouvien', 'Siourin'], [6, [32.8, 94.3], 'Driezmaran', 'Siourin']];
+var products = [[1, 'Brick', 20.0, 'Building', [1, 2, 4, 5, 8]], [18, 'Glass', 60.0, 'Building', [1, 4, 5, 8]], [20, 'Wood', 23.0, 'Building', [1, 2, 3, 4, 5, 6, 7, 8]], [3, 'Wheat', 10.0, 'Food', [1, 2, 3, 4, 5, 7]], [6, 'Wine', 30.0, 'Food', [1, 4, 5, 7]], [7, 'Spices', 80.0, 'Food', [1, 4, 8]], [10, 'Oil', 25.0, 'Food', [3, 7]], [12, 'Salt', 10.0, 'Food', [1, 4, 8]], [14, 'Cheese', 20.0, 'Food', [1, 2, 3, 4, 5, 6]], [17, 'Honey', 18.0, 'Food', [1, 4, 5, 8]], [19, 'Milk', 5.0, 'Food', [1, 2, 3, 4, 5, 6]], [16, 'Coal', 15.0, 'Fuel', [2, 5, 6, 7]], [5, 'Iron', 40.0, 'Metal', [2, 5, 6, 7]], [9, 'Gold', 200.0, 'Metal', [2, 6, 7]], [13, 'Silver', 120.0, 'Metal', [2, 6, 7, 8]], [2, 'Copper', 80.0, 'Metal', [2, 5, 6, 8]], [4, 'Wool', 15.0, 'Textile', [3, 4, 6, 7, 8]], [8, 'Silk', 100.0, 'Textile', [1, 4, 8]], [11, 'Leather', 35.0, 'Textile', [3, 6, 7]], [15, 'Cotton', 50.0, 'Textile', [3, 4, 6, 7]], [21, 'Stone', 25.0, 'Building', [2, 3, 5, 6, 7]], [22, 'Fish', 12.0, 'Food', [1, 3, 4, 8]], [23, 'Flour', 8.0, 'Food', [1, 2, 3, 4, 5, 7]], [24, 'Linen', 40.0, 'Textile', [3, 4, 5, 7, 8]]];
 
-    await fetcher.fetchData('http://127.0.0.1:5000/get_connections', data => {
-        var measures = data[0];
-        var connections = data[1];
-        var coordinatesArray = data[2];
-        var products = data[3];
-        var routesLenght = data[4]
-        return { measures, connections, coordinatesArray, products, routesLenght };
-    });
+window.onload = async function() {
     
     const userSheet = new UserSheet();
     userSheet.createWallet();
 
-    const citySheet = new CitySheetBuilder(fetcher.data.products, userSheet);
-    var [citySize, marketSize] = citySheet.scaleCity(fetcher.data.connections);
+    const citySheet = new CitySheetBuilder(products, userSheet);
+    var [citySize, marketSize] = citySheet.scaleCity(connections);
 
     const city = new CityHandler(citySheet, userSheet);
-    city.createCities(fetcher.data.connections, fetcher.data.coordinatesArray)
+    city.createCities(connections, coordinatesArray)
 
     city.createSvg();
-    city.drawLines(fetcher.data.measures);
+    city.drawLines(measures);
 
     initDragElement();
     initResizeElement();
