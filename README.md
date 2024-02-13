@@ -6,7 +6,10 @@ The functional-front branch doesn't use the python file run, some of the data th
 
 ## Quick Start
 
-Clone the repository, run the python server than the index.html '''OR'''
+Clone the repository, run the python server than the index.html
+
+``` OR ```
+
 > Just navigate to -> [The Mire](https://yuri0000aaaaa.github.io/Quagmire-VV/)
 
 ## Actions
