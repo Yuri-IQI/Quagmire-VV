@@ -1,4 +1,4 @@
-# This is an attempt at a map browser game.
+# A map browser game
 
 The main branch uses a python file with flask to take data from a psql database, do some processing and send it to the carta.js (main.js) file.
 
