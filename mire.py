@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 import psycopg2
 import math
@@ -80,9 +80,16 @@ class City:
 class Product:
     def __init__(self):
         self.goods_info = []
+        self.quality_modifiers = 100
 
     def organize_categories(self):
-        organized_goods = sorted(self.goods_info, key=lambda x: x[3])
+        org_goods = sorted(self.goods_info, key=lambda x: x[3])
+        return org_goods
+
+    def qualify(self):
+        self.goods_info = self.organize_categories()
+        for good in self.goods_info:
+            good.append(self.quality_modifiers)
 
 fetcher = Fetcher()
 path = Routes()
@@ -93,21 +100,65 @@ for id_city, nome, região, coordenada in fetcher.fetch("SELECT id, nomes, regi�
     path.cities.append([id_city, coordenada, nome, região])
 
 for id_goods, goods, price, category, cities in fetcher.fetch("SELECT id, produtos, preço, categoria, cidades FROM goods"):
-    product.goods_info.append((id_goods, goods, float(price), category, cities))
+    product.goods_info.append([id_goods, goods, float(price), category, cities])
 
-product.organize_categories()
 path.way()
-measured_connections, routes_lenght = path.measure()
+measured_connections, routes_length = path.measure()
 established_connections = path.visualize()
 
 city.scale_city(established_connections)
 
-print(product.goods_info)
+product.qualify()
 
-@app.route('/get_connections', methods=['GET'])
-def get_connections():
-    pack = [measured_connections, established_connections, path.cities, product.goods_info, routes_lenght]
+@app.route('/get_data', methods=['GET'])
+def get_data():
+    pack = [measured_connections, established_connections, path.cities, product.goods_info, routes_length]
     return jsonify(pack)
+
+class DataProcessing:
+    def __init__(self):
+        self.travel_log = []
+        self.followed_path = []
+
+    def control_data(self, travel_log):
+        if not self.travel_log:
+            self.travel_log = travel_log
+            self.process_route()
+        elif self.travel_log[0] != travel_log[0]:
+            if self.travel_log[0][:len(travel_log[0])] == travel_log[0]:
+                self.travel_log[0] += travel_log[0][len(self.travel_log[0]):]
+            else:
+                self.travel_log[0] = travel_log[0]
+            self.process_route()
+
+    def process_route(self):
+        self.followed_path = []
+
+        for index, location in enumerate(self.travel_log[0]):
+            if not self.followed_path or location != self.followed_path[-1][0]:
+                self.followed_path.append((location, 'trace' if index < (len(self.travel_log[0])-1) else []))
+        self.calculate_route()
+        print(self.followed_path)
+
+        return self.followed_path
+    
+    def calculate_route(self):
+        for index, j in enumerate(self.followed_path[:-1]):
+            for i in routes_length:
+                if (i[0][0][1] == int(j[0][0]) and i[0][1][1] == int(self.followed_path[index+1][0][0])) or (i[0][1][1] == int(j[0][0]) and i[0][0][1] == int(self.followed_path[index+1][0][0])):
+                    self.followed_path[index] = (j[0], i[1])
+    
+processor = DataProcessing()
+
+@app.route('/send_data', methods=['POST'])
+def send_data():
+    travel_log = request.get_json()
+    processor.control_data(travel_log)
+    return jsonify({'status': 'success'}), 200
+
+@app.route('/visualize_data', methods=['GET'])
+def visualize_data():
+    return jsonify({'followed_path': processor.followed_path})
 
 if __name__ == '__main__':
     app.run(debug=True)

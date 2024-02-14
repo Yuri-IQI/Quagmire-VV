@@ -1,0 +1,362 @@
+@font-face {
+    font-family: 'Hardinge';
+    src: url('../Fonts/hardinge/Hardinge Free Trial.woff');
+}
+
+@font-face {
+    font-family: 'Rosemary';
+    src: url('../Fonts/rosemary-cufonfonts-webfont/Rosemary.woff');
+}
+
+@font-face {
+    font-family: 'Humanistic';
+    src: url('../Fonts/humanistic/Humanistic.ttf');
+}
+
+@font-face {
+    font-family: 'FantaisieArtistique';
+    src: url('../Fonts/fantaisieartistique/FantaisieArtistique.ttf');
+}
+
+body {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+    background-size: cover;
+    background-position: center;
+    background-image: url(../Img/Textura_Mesa.jpg);
+    display: grid;
+    grid-template-areas: 
+        "map_board"
+        "menu";
+}
+
+.table {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.map_board {
+    grid-area: map_board;
+    position: relative;
+}
+
+#map_paper {
+	display: grid;
+	z-index: 117;
+	top: 12px;
+	left: 616px;
+	width: 864px;
+	height: 418px;
+	min-width: 580px;
+	min-height: 260px;
+	overflow: clip;
+}
+  
+
+#map_paper img {
+    height: inherit;
+    width: inherit;
+}
+
+.holdable {
+	position: absolute;
+	z-index: 10;
+	width: 100%;
+	height: 25%;
+}
+
+.resizable {
+	position: absolute;
+	resize: both;
+}
+
+.resizer-right {
+	width: 16px;
+	height: 100%;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	cursor: e-resize;
+}
+
+.resizer-bottom {
+	width: 100%;
+	height: 16px;
+	background: transparent;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	cursor: n-resize;
+}
+
+.resizer-both {
+	width: 16px;
+	height: 16px;
+	background: transparent;
+	z-index: 10;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	cursor: nw-resize;
+}
+
+.map_element {
+	grid-area: map_board;
+	min-width: 580px;
+	min-height: 260px;
+}
+
+.menu {
+	grid-area: menu;
+	display: flex;
+}
+
+.menu .user_menu {
+	display: flex;
+	background-image: url(../Img/user_sheet.png);
+	background-size: 100% 100%;
+	background-position: center;
+	background-repeat: no-repeat;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	min-width: 270px;
+	min-height: 220px;
+	z-index: 105;
+	top: 455px;
+	left: 742px;
+	width: 449px;
+	height: 332px;
+}
+
+.user_info {
+	display: flex;
+	align-items: inherit;
+	height: 20%;
+	width: 90%;
+	justify-content: flex-start;
+	text-align: left;
+	padding: 8px;
+}
+
+.user_info p {
+	font-family: 'FantaisieArtistique', 'Hardinge', sans-serif;
+	font-size: calc(64% + 4vmin);
+}
+
+.cart {
+	display: grid;
+	width: 82%;
+	grid-template-columns: repeat(auto-fill, minmax(216px, 1fr));
+	font-family: 'Humanistic';
+	grid-template-rows: repeat(auto-fill, minmax(80px, 1fr));
+	height: 70%;
+	margin-bottom: 5%;
+	overflow: auto;
+	scrollbar-width: none;
+	gap: 4vmin;
+}
+
+.cart_item {
+	display: flex;
+	width: 100%;
+	flex-direction: column;
+	height: 100%;
+	padding: 0px 0 0px 0px;
+}
+
+.sub_cart_item {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.sub_cart_item p {
+	margin: 0 0 12px 0px;
+	font-size: 20pt;
+	text-shadow: 2px 2px 2px #00000063;
+}
+
+.qt {
+	border: 2px solid;
+	border-radius: 6px;
+	padding: 2px;
+	font-size: 16pt !important;
+	margin: 0 !important;
+	width: 40px;
+	text-align: center;
+}
+
+.sub_cart_item input {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	height: 20px;
+	width: 40%;
+	margin-right: 24px;
+	background-color: #0000000f;
+	font-family: 'Humanistic';
+	font-size: 14pt;
+	text-shadow: 2px 2px 2px #00000063;
+}
+
+.sub_cart_item button {
+	font-family: 'Humanistic';
+	font-size: 14pt;
+	border: 2px dashed #6e6e6e;
+	border-radius: 12px;
+	background-color: #bab57b4f;
+	text-shadow: 2px 2px 2px #00000063;
+	cursor: pointer;
+}
+
+.item_quality {
+	margin: 0 4% 0 4%;
+}
+
+.menu .city_menu {
+	display: flex;
+	background-image: url(../Img/menu_cidade.png);
+	background-size: 100% 100%;
+	background-position: center;
+	background-repeat: no-repeat;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	min-width: 532px;
+	min-height: 340px;
+	top: 23px;
+	left: 9px;
+	width: 520px;
+	height: 720px;
+}
+
+.city_info {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-direction: row;
+	max-height: 47%;
+	min-height: 27%;
+	width: 80%;
+}
+
+.city_info p {
+	font-family: 'FantaisieArtistique', 'Hardinge', sans-serif;
+	font-size: calc(32px + 2vmin);
+	margin: 0;
+	z-index: 11;
+}
+
+#city_region {
+	margin-right: 5%;
+}
+
+.market {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(208px, 1fr));
+	grid-template-rows: repeat(auto-fill, minmax(86px, 1fr));
+	overflow: auto;
+	scrollbar-width: none;
+	width: 80%;	
+	align-items: flex-start;
+	margin-bottom: 6%;
+}
+
+.market::-webkit-scrollbar {
+	width: 0;
+	height: 0;
+}
+
+.product_info {
+	padding: 8px;
+	height: 52%;
+	width: 192px;
+}
+
+.product_data {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: row;
+	font-family: 'Humanistic';
+}
+
+.product_data p {
+	margin: 0 0 12px 0px;
+	font-size: 20pt;
+    text-shadow: 2px 2px 2px #00000063;
+}
+
+.product_access {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-family: 'Rosemary';
+}
+
+.product_access input {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	height: 20px;
+	width: 120px;
+	margin-right: 24px; 
+	background-color: #0000000f;
+	font-family: 'Humanistic';
+	font-size: 14pt;
+    text-shadow: 2px 2px 2px #00000063;
+}
+
+.product_access button {
+	font-family: 'Humanistic';
+	font-size: 14pt;
+	border: 2px dashed #6e6e6e;
+	border-radius: 12px;
+	background-color: #bab57b4f;
+    text-shadow: 2px 2px 2px #00000063;
+    cursor: pointer;
+}
+
+#icons {
+    grid-area: map_board;
+    height: inherit;
+    width: inherit;
+}
+
+#icons img {
+    opacity: 90%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+	width: 2%;
+	height: 3%;
+}
+
+.icon {
+    grid-area: map_board;
+}
+
+.routes {
+	display: none;
+	position: absolute;
+	height: inherit;
+	width: inherit;
+}
+
+svg {
+    opacity: 60%;
+}
+
+.data-page-link {
+	background: transparent;
+	border: 2px dashed;
+	font-size: medium;
+	color: white;
+	cursor: pointer;
+	text-decoration: none;
+}

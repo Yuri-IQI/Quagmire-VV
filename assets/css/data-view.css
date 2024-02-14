@@ -1,0 +1,22 @@
+body {
+	background-color: black;
+    height: 100vh;
+}
+
+svg {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	filter: blur(3.2px);
+	z-index: -10;
+}
+
+text {
+    fill: white;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+line {
+    stroke-width: 4px;
+}

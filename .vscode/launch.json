@@ -16,6 +16,13 @@
             "reAttach": true,
             "name": "Launch index.html",
             "file": "${workspaceFolder}/index.html"
+        },
+        {
+            "name": "Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
         }
     ]
 }
