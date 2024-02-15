@@ -1,4 +1,4 @@
-# A map browser game
+# Quagmire
 
 The main branch uses a python file with flask to take data from a psql database, do some processing and send it to the carta.js (main.js) file.
 
