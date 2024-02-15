@@ -17,4 +17,4 @@ Perform the following actions in the game:
 ## Quick Start
 The site is online with most of its functionalities on GitHub Pages.
 
-So just go to [The Mire](https://yuri-crt.github.io/Quagmire-VV/)
+So, just go to [The Mire](https://yuri-crt.github.io/Quagmire-VV/)
