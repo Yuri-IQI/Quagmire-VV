@@ -15,9 +15,5 @@ Perform the following actions in the game:
 7. **Zoom Mode**: Click on a city region name (e.g., Siourin) to enter zoom mode.
 
 ## Quick Start
-
-Clone the repository, run the python server than the index.html
-
-``` OR ```
-
-> Just navigate to -> [The Mire](https://yuri-crt.github.io/Quagmire-VV/)
+The site is online with most of its functionalities on GitHub Pages.
+So just go to [The Mire](https://yuri-crt.github.io/Quagmire-VV/)
