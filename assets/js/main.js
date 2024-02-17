@@ -1,10 +1,9 @@
-import { initResizeElement, initDragElement, zoomInMap} from './handsOn.js';
+import { initResizeElement, initDragElement, zoomInMap, getCoordinates } from './handsOn.js';
 var travelLog = [[]];
 
 class Fetcher {
     constructor() {
         this.data;
-        
     }
 
     async fetchData(url, callback) {
@@ -78,7 +77,6 @@ class CitySheetBuilder {
             this.cityGoods = [];
             return;
         }
-    
         for (let i = cityProducts.length - 1; i > 0; i--) {
             let j = Math.floor(Math.random() * (i + 1));
             [cityProducts[i], cityProducts[j]] = [cityProducts[j], cityProducts[i]];
@@ -115,8 +113,8 @@ class CityHandler {
         for (let i = 0; i < measures.length; i++) {
             let pointA = measures[i][0][1];
             let pointB = measures[i][1][1];
-
             var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+
             line.setAttribute("x1", pointA[0] + "%");
             line.setAttribute("y1", pointA[1] + "%");
             line.setAttribute("x2", pointB[0] + "%");
@@ -151,7 +149,7 @@ class CityHandler {
                 town.style.padding = "2px";
                 town.style.left = coordinatesArray[i][1][0] +  "%";
                 town.style.top = coordinatesArray[i][1][1] +  "%";
-                travelLog[0].push([this.currentSelectedCity.id, this.currentSelectedCity.alt], [town.id, town.alt]);
+                travelLog[0].push([this.currentSelectedCity.id, this.currentSelectedCity.alt, coordinatesArray[i][3]], [town.id, town.alt, coordinatesArray[i][3]]);
                 document.getElementById("city_name").innerHTML = town.alt;
                 document.getElementById("city_region").innerHTML = coordinatesArray[i][3];
                 this.citySheet.organizeMarket(town.id, this.currentSelectedCity);
@@ -195,9 +193,7 @@ class UserSheet {
 
         if (!isNaN(quantity) && quantity > 0 && this.wallet >= cityGoods[productId][2]*quantity) {
             this.wallet = this.wallet - (cityGoods[productId][2]*quantity);
-
             let productInCart = this.cart.find(item => item[0] === cityGoods[productId][0]);
-
             if (productInCart) {
                 productInCart[6] += quantity;
             } else {
@@ -289,9 +285,8 @@ class UserSheet {
     
     calculateItemQuality(item) {
         if (item[7]) {
-            var decrement_factor = 1 + item[7] / 1000;
-    
-            item[5] = item[5] / decrement_factor;
+            var decrementFactor = 1 + item[7] / 1000;
+            item[5] = item[5] / decrementFactor;
             item[5] = Math.max(0, item[5]);
     
             if (item[5] < 20) {
@@ -305,7 +300,6 @@ class UserSheet {
     
         const randomValue = Math.random() / 10;
         let adjustmentFactor = item[4].includes(Number(currentCity[0])) ? 1 - randomValue : 1 + randomValue;
-    
         adjustmentFactor = Math.max(0.7, Math.min(1.3, adjustmentFactor));
     
         if (!this.cityPrices[currentCity]) {
@@ -314,7 +308,7 @@ class UserSheet {
         if (!this.cityPrices[currentCity][item[1]]) {
             this.cityPrices[currentCity][item[1]] = {price: item[2], count: 0};
         }
-    
+        
         let price = (item[2] * adjustmentFactor) * (item[5] / 100);
         if (this.cityPrices[currentCity][item[1]].count > 0) {
             price *= Math.max(0.95, Math.min(1.05, adjustmentFactor));
@@ -372,6 +366,7 @@ window.onload = async function() {
     initResizeElement();
     sendData();
 }
+getCoordinates();
 
 var zoom = new zoomInMap();
 zoom.activateZoom();

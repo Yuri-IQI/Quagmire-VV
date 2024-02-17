@@ -110,11 +110,6 @@ city.scale_city(established_connections)
 
 product.qualify()
 
-@app.route('/get_data', methods=['GET'])
-def get_data():
-    pack = [measured_connections, established_connections, path.cities, product.goods_info, routes_length]
-    return jsonify(pack)
-
 class DataProcessing:
     def __init__(self):
         self.travel_log = []
@@ -149,6 +144,11 @@ class DataProcessing:
                     self.followed_path[index] = (j[0], i[1])
     
 processor = DataProcessing()
+
+@app.route('/get_data', methods=['GET'])
+def get_data():
+    pack = [measured_connections, established_connections, path.cities, product.goods_info, routes_length]
+    return jsonify(pack)
 
 @app.route('/send_data', methods=['POST'])
 def send_data():

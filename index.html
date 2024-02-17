@@ -19,7 +19,7 @@
                 <img class="map_element" src="assets/Img/Imagem_montanhas.png" alt="montanhas">
                 <img class="map_element" src="assets/Img/Imagem_rios.png" alt="rios">
                 <img class="map_element" src="assets/Img/Imagem_estradas_1.png" alt="estradas">
-                <div class="pins map_element" id="icons"></div>
+                <div class="pins map_element" id="icons" onclick="getCoordinates(event)"></div>
                 <div class="routes"></div>
             </div>
         </div>
@@ -43,7 +43,7 @@
             </div>
         </div>
     </sction>
-    <p id="coordinates" style="display: none;"></p>
+    <p id="coordinates"></p>
     <a href="data-view.html" target="_blank" rel="noopener noreferrer" id="data-page" class="data-page-link">View Data</a>
     <script type="module" src="assets/js/main.js"></script>
 </body>
