@@ -1,7 +1,7 @@
 # Quagmire
 
 This is Quagmire, a Map Browser Game that presents interfaces through which you can interact with a fictional world by trading goods.
-Quagmire also has an offline version for visualising your interaction with its world through data and graphs.
+Quagmire also has an offline version for visualising your interaction with its world through charts.
 
 ## Actions
 Perform the following actions in the game:
