@@ -232,7 +232,7 @@ export class zoomInMap {
 }
 
 //get map coordinates
-var allCoordinates = [];
+/*var allCoordinates = [];
 export function getCoordinates(event) {
     var iconsDiv = document.getElementById("icons");
     var rect = iconsDiv.getBoundingClientRect();
@@ -242,4 +242,4 @@ export function getCoordinates(event) {
     allCoordinates.push(coordinates);
     
     document.getElementById("coordinates").innerHTML = allCoordinates.join('<br>');
-}
+}*/

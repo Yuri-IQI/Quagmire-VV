@@ -176,8 +176,8 @@ body {
 }
 
 .sub_cart_item p {
-	margin: 0 0 12px 0px;
-	font-size: 20pt;
+	margin: 0 6px 0px 6px;
+	font-size: 18pt;
 	text-shadow: 2px 2px 2px #00000063;
 }
 
@@ -221,7 +221,7 @@ body {
 
 .menu .city_menu {
 	display: flex;
-	background-image: url(../Img/menu_cidade.png);
+	background-image: url(../Img/city_menu.png);
 	background-size: 100% 100%;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -334,7 +334,7 @@ body {
     position: absolute;
     transform: translate(-50%, -50%);
 	width: 2%;
-	height: 3%;
+	height: 4%;
 }
 
 .icon {

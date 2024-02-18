@@ -1,4 +1,4 @@
-import { initResizeElement, initDragElement, zoomInMap, getCoordinates } from './handsOn.js';
+import { initResizeElement, initDragElement, zoomInMap } from './handsOn.js';
 var travelLog = [[]];
 
 class Fetcher {
@@ -101,6 +101,7 @@ class CityHandler {
         this.userSheet = userSheet;
         this.routes = document.querySelector('.routes');
         this.svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        this.cityCount = 0;
     }
 
     createSvg() {
@@ -143,32 +144,80 @@ class CityHandler {
         this.citySheet.cityId = town.id;
         if (this.currentSelectedCity) {
             if (connections[this.currentSelectedCity.id] && connections[this.currentSelectedCity.id].includes(Number(town.id))) {
-                this.currentSelectedCity.style.border = "none";
-                town.style.border = "2px dashed darkred";
-                town.style.borderRadius = "16px";
-                town.style.padding = "2px";
-                town.style.left = coordinatesArray[i][1][0] +  "%";
-                town.style.top = coordinatesArray[i][1][1] +  "%";
-                travelLog[0].push([this.currentSelectedCity.id, this.currentSelectedCity.alt, coordinatesArray[i][3]], [town.id, town.alt, coordinatesArray[i][3]]);
-                document.getElementById("city_name").innerHTML = town.alt;
-                document.getElementById("city_region").innerHTML = coordinatesArray[i][3];
-                this.citySheet.organizeMarket(town.id, this.currentSelectedCity);
-                this.userSheet.fillUserSheet([town.id, this.currentSelectedCity], true);
-                this.userSheet.calculateTravelledDistance(this.currentSelectedCity.id, town.id);
-                this.currentSelectedCity = town;
+                this.updateSelectedCity(i, town, connections, coordinatesArray);
             }
         } else {
-            town.style.border = "2px dashed darkred";
-            town.style.borderRadius = "16px";
-            town.style.padding = "2px";
-            town.style.left = coordinatesArray[i][1][0] +  "%";
-            town.style.top = coordinatesArray[i][1][1] +  "%";
-            this.currentSelectedCity = town.alt;
-            document.getElementById("city_name").innerHTML = this.currentSelectedCity;
-            document.getElementById("city_region").innerHTML = coordinatesArray[i][3];
-            this.citySheet.organizeMarket(town.id, this.currentSelectedCity);
-            this.currentSelectedCity = town;
+            this.initializeSelectedCity(i, town, coordinatesArray);
+        }        
+    }
+
+    updateSelectedCity(i, town, connections, coordinatesArray) {
+        this.currentSelectedCity.style.border = "none";
+        this.updateTownStyle(town, coordinatesArray, i);
+        this.updateTravelLog(i, town, coordinatesArray);
+        this.updateDOMElements(town, coordinatesArray, i);
+        this.citySheet.organizeMarket(town.id, town.alt);                
+        this.userSheet.calculateTravelledDistance(this.currentSelectedCity.id, town.id);
+        this.currentSelectedCity = town;
+    }
+
+    initializeSelectedCity(i, town, coordinatesArray) {
+        this.updateTownStyle(town, coordinatesArray, i);
+        let townName = town.alt;
+        let userWallet = this.userSheet.wallet.toFixed(2);
+        travelLog[1] = {[townName] : {[this.cityCount] : [userWallet]}};
+        this.updateDOMElements(town, coordinatesArray, i);
+        this.citySheet.organizeMarket(town.id, townName);
+        this.currentSelectedCity = town;
+    }
+
+    updateTownStyle(town, coordinatesArray, i) {
+        Object.assign(town.style, {
+            border: "2px dashed darkred",
+            borderRadius: "16px",
+            padding: "2px",
+            left: `${coordinatesArray[i][1][0]}%`,
+            top: `${coordinatesArray[i][1][1]}%`
+        });
+    }
+
+    updateTravelLog(i, town, coordinatesArray) {
+        travelLog[0].push(
+            [this.currentSelectedCity.id, this.currentSelectedCity.alt, coordinatesArray[i][3]],
+            [town.id, town.alt, coordinatesArray[i][3]]
+        );
+        this.userSheet.fillUserSheet([town.id, town.alt], true);
+        if (!travelLog[1][this.currentSelectedCity.alt]) {
+            travelLog[1][this.currentSelectedCity.alt] = {};
         }
+        if (!travelLog[1][this.currentSelectedCity.alt][this.cityCount]) {
+            travelLog[1][this.currentSelectedCity.alt][this.cityCount] = [this.userSheet.wallet.toFixed(2)];
+        } else {
+            travelLog[1][this.currentSelectedCity.alt][this.cityCount].push(this.userSheet.wallet.toFixed(2));
+        }
+        if (!travelLog[1][town.alt]) {
+            travelLog[1][town.alt] = {};
+        }
+        if (typeof travelLog[1][town.alt][this.cityCount] == 'undefined') {
+            this.counter();
+            travelLog[1][town.alt][this.cityCount] = [this.userSheet.wallet.toFixed(2)];
+        } else {
+            this.counter();
+            if (!travelLog[1][town.alt][this.cityCount]) {
+                travelLog[1][town.alt][this.cityCount] = [this.userSheet.wallet.toFixed(2)];
+            } else {
+                travelLog[1][town.alt][this.cityCount].push(this.userSheet.wallet.toFixed(2));
+            }
+        }
+    }
+
+    updateDOMElements(town, coordinatesArray, i) {
+        document.getElementById("city_name").textContent = town.alt;
+        document.getElementById("city_region").textContent = coordinatesArray[i][3];
+    }
+
+    counter() {
+        this.cityCount++;
     }
 }
 
@@ -185,8 +234,9 @@ class UserSheet {
 
     createWallet() {
         this.walletDisplay.innerHTML = "Wallet: " + this.wallet.toFixed(2);
+        console.log(travelLog);
     }
-
+    
     takeTransaction(buttonId, cityGoods, currentCity) {
         let productId = buttonId.split('_')[1];
         let quantity = Number(document.getElementById(`quantity_${productId}`).value);
@@ -205,7 +255,7 @@ class UserSheet {
     }
 
     fillUserSheet(currentCity, reajust) {
-        this.createWallet()
+        this.createWallet(currentCity)
 
         const cartSpace = document.querySelector('.cart');
         cartSpace.innerHTML = '';
@@ -260,7 +310,7 @@ class UserSheet {
                 this.cart[item][6] -= soldQuantity;
                 qt.innerHTML = this.cart[item][6];
             }
-            this.createWallet();
+            this.createWallet(currentCity);
         }
     }
 
@@ -278,7 +328,6 @@ class UserSheet {
                 } else {
                     item[7] += this.pathLength;
                 }
-                console.log(item);
             }
         }
     }    
@@ -351,7 +400,7 @@ window.onload = async function() {
         return { measures, connections, coordinatesArray, products, routesLength };
     });
     const userSheet = new UserSheet(fetcher.data.routesLength);
-    userSheet.createWallet();
+    userSheet.createWallet(null);
 
     const citySheet = new CitySheetBuilder(fetcher.data.products, userSheet);
     var [citySize, marketSize] = citySheet.scaleCity(fetcher.data.connections);
@@ -366,9 +415,6 @@ window.onload = async function() {
     initResizeElement();
     sendData();
 }
-getCoordinates();
-
 var zoom = new zoomInMap();
 zoom.activateZoom();
 zoom.activateDrag();
-

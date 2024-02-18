@@ -114,8 +114,11 @@ class DataProcessing:
     def __init__(self):
         self.travel_log = []
         self.followed_path = []
+        self.mapped_exchanges = {}
 
     def control_data(self, travel_log):
+        self.mapped_exchanges = travel_log[1]
+        print(self.mapped_exchanges)
         if not self.travel_log:
             self.travel_log = travel_log
             self.process_route()
@@ -133,7 +136,6 @@ class DataProcessing:
             if not self.followed_path or location != self.followed_path[-1][0]:
                 self.followed_path.append((location, 'trace' if index < (len(self.travel_log[0])-1) else []))
         self.calculate_route()
-        print(self.followed_path)
 
         return self.followed_path
     
@@ -142,7 +144,7 @@ class DataProcessing:
             for i in routes_length:
                 if (i[0][0][1] == int(j[0][0]) and i[0][1][1] == int(self.followed_path[index+1][0][0])) or (i[0][1][1] == int(j[0][0]) and i[0][0][1] == int(self.followed_path[index+1][0][0])):
                     self.followed_path[index] = (j[0], i[1])
-    
+
 processor = DataProcessing()
 
 @app.route('/get_data', methods=['GET'])
@@ -158,7 +160,8 @@ def send_data():
 
 @app.route('/visualize_data', methods=['GET'])
 def visualize_data():
-    return jsonify({'followed_path': processor.followed_path})
+    return jsonify({'followed_path': processor.followed_path},
+                   {'exchanges': processor.mapped_exchanges})
 
 if __name__ == '__main__':
     app.run(debug=True)
