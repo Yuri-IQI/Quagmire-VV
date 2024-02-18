@@ -4,7 +4,7 @@ This is Quagmire, a Map Browser Game that presents interfaces through which you 
 Quagmire also has an offline version for visualising your interaction with its world through charts.
 
 ## Actions
-Perform the following actions in the game:
+The game allow the following actions:
 
 1. **Navigation**: Click on the city icons to access their markets and move from one city to another.
 2. **Buy**: On the city sheet, select a quantity of a good in the market section, then click on the 'Buy' button.
