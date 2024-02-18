@@ -186,8 +186,7 @@ body {
 	border-radius: 6px;
 	padding: 2px;
 	font-size: 16pt !important;
-	margin: 0 !important;
-	width: 40px;
+	margin: 0 0 4px 0px !important;
 	text-align: center;
 }
 

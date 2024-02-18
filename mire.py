@@ -152,16 +152,27 @@ def get_data():
     pack = [measured_connections, established_connections, path.cities, product.goods_info, routes_length]
     return jsonify(pack)
 
+last_error = None
+
 @app.route('/send_data', methods=['POST'])
 def send_data():
+    global last_error
     travel_log = request.get_json()
-    processor.control_data(travel_log)
+    try:
+        processor.control_data(travel_log)
+    except Exception as e:
+        last_error = str(e)
+        print('Problem in Travel Log:', last_error)
     return jsonify({'status': 'success'}), 200
 
 @app.route('/visualize_data', methods=['GET'])
 def visualize_data():
-    return jsonify({'followed_path': processor.followed_path},
-                   {'exchanges': processor.mapped_exchanges})
+    global last_error
+    if last_error is not None:
+        return jsonify({'error': last_error}), 500
+    else:
+        return jsonify({'followed_path': processor.followed_path},
+                       {'exchanges': processor.mapped_exchanges})
 
 if __name__ == '__main__':
     app.run(debug=True)

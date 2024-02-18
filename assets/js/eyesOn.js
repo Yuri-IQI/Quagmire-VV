@@ -1,3 +1,5 @@
+Chart.defaults.color = "lightgray";
+
 class LookOut {
     constructor() {
         this.foundData;
@@ -6,21 +8,32 @@ class LookOut {
     }
 
     async lookForData() {
-        const response = await fetch('http://127.0.0.1:5000/visualize_data');
-        this.foundData = await response.json();
-        this.followedPath = this.foundData[0].followed_path;
-        this.mappedExchanges = this.foundData[1].exchanges;
-
-        console.log(this.followedPath);
-        console.log(this.mappedExchanges);
-    }
+        try {
+            const response = await fetch('http://127.0.0.1:5000/visualize_data');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            this.foundData = await response.json();
+            this.followedPath = this.foundData[0].followed_path;
+            this.mappedExchanges = this.foundData[1].exchanges;
+        } catch (error) {
+            let travelLogWarning = document.getElementById('empty-travel-log');
+            travelLogWarning.style.display = 'block';
+            travelLogWarning.style.color = 'white';
+            document.querySelectorAll('.graph-page').forEach((page) => {
+                page.style.display = 'none';
+            });
+            console.log(error);
+            throw error;
+        }
+    }    
 }
 
 class Visualizer {
-    constructor(followedPath, mappedExchanges, svgHeight, svgWidth) {
+    constructor(followedPath, mappedExchanges,) {
         this.treatedData = [];
-        this.svgWidth = svgWidth;
-        this.svgHeight = svgHeight;
+        this.svgWidth = window.innerWidth;
+        this.svgHeight = window.innerHeight;
         this.svg = d3.select("body").append("svg")
             .attr("width", this.svgWidth)
             .attr("height", this.svgHeight);
@@ -36,7 +49,31 @@ class Visualizer {
             stRes: document.getElementById('stops-result')
         }
     }
+
+    lookClosely(chart, graphPageId) {
+        let chartContainer = document.getElementById(graphPageId);
     
+        chart.addEventListener('dblclick', function(event) {
+            if (chart.style.display === 'block' && chartContainer.style.height === '100vh') {
+                let elements = chartContainer.getElementsByTagName('*');
+                for (let i = 0; i < elements.length; i++) {
+                    elements[i].style.display = '';
+                }
+    
+                chartContainer.style.height = '374px';
+            } else {
+                let elements = chartContainer.getElementsByTagName('*');    
+                for (let i = 0; i < elements.length; i++) {
+                    elements[i].style.display = 'none';
+                }
+    
+                chart.style.display = 'block';
+                chartContainer.style.height = '100vh';
+            }
+        });
+    }    
+    
+    //Background Graph
     drawGraph() {
         var vertexCounter = {};
         this.followedPath.forEach((v, i) => {
@@ -56,7 +93,7 @@ class Visualizer {
                     .attr("cx", x)
                     .attr("cy", y)
                     .attr("r", 10)
-                    .style("fill", "darkorange");
+                    .style("fill", "rgb(255,140,0,0.4)");
     
                 this.vertexNames.push({x: x, y: y, name: element});
             }
@@ -69,7 +106,7 @@ class Visualizer {
                         .attr("y1", lastVertex.y)
                         .attr("x2", this.vertexes[element].x)
                         .attr("y2", this.vertexes[element].y)
-                        .style("stroke", "darkorange");
+                        .style("stroke", "rgb(255,140,0, 0.4)");
                 }
             }
         });
@@ -112,15 +149,28 @@ class Visualizer {
                 datasets: [{
                     label: 'Traveled Distance',
                     data: Object.values(this.treatedData[0]),
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    backgroundColor: 'rgb(0, 121, 255, 0.2)',
                     borderColor: 'white',
-                    borderWidth: 2
+                    borderWidth: 2,
+                    fontColor: 'white'
                 }]
             },
             options: {
-                responsive: true
+                scales: {
+                    y: {
+                      grid: {
+                        color: 'rgb(229,229,229,0.4)'
+                      }
+                    },
+                    x: {
+                      grid: {
+                        color: 'none'
+                      }
+                    }
+                }
             }
         });
+        this.lookClosely(this.charts.trip, 'graph-page-1');
     }
 
     treatStopsData() {
@@ -151,7 +201,7 @@ class Visualizer {
     }
     
     lookAtTheStops() {
-        const dataGroup = this.treatStopsData(); //I hate this whole function
+        const dataGroup = this.treatStopsData();
         new Chart(this.charts.stops, {
             type: 'bubble',
             data: {
@@ -164,9 +214,9 @@ class Visualizer {
                             const commonFactor = regionLength * dataLength + (((oneMoreIndex+1)**-1) / (index+1));
                             backgroundColor: index
                             return {
-                                x: commonFactor,
-                                y: (commonFactor - city.count) - dataLength,
-                                r: city.count * 6,
+                                x: commonFactor/10,
+                                y: ((commonFactor - city.count) - dataLength)/10,
+                                r: city.count*10,
                                 label: city.stop
                             };
                         }),
@@ -174,7 +224,18 @@ class Visualizer {
                 })
             },
             options: {
-                responsive: true,
+                scales: {
+                    y: {
+                      grid: {
+                        color: 'rgb(229,229,229,0.4)'
+                      }
+                    },
+                    x: {
+                      grid: {
+                        color: 'none'
+                      }
+                    }
+                },
                 tooltips: {
                     mode: 'point',
                     callbacks: {
@@ -208,6 +269,83 @@ class Visualizer {
                 }
             }]
         });
+        this.lookClosely(this.charts.stops, 'graph-page-1');
+    }
+
+    treatIncomeExpensesData() {
+        let { labels, inQuantity, outQuantity } = this.treatExchangesData();
+        outQuantity.pop();
+        let income = [];
+        let expenses = [];
+        let totalIncome = 0;
+        let totalExpenses = 0;
+        for (let i = 0; i < outQuantity.length; i++) {
+            let value = (outQuantity[i] - inQuantity[i]).toFixed(2);
+            if (value >= 0) {
+                income.push(value);
+                expenses.push(0);
+                totalIncome += parseFloat(value);
+            } else {
+                income.push(0);
+                expenses.push(value);
+                totalExpenses += parseFloat(value);
+            }
+        }
+        labels.pop();
+        labels.push('Total');
+        income.push(totalIncome.toFixed(2));
+        expenses.push(totalExpenses.toFixed(2));
+        
+        return { labels, income, expenses };
+    }
+    
+    lookAtTheIncomeExpenses() {
+        const { labels, income, expenses } = this.treatIncomeExpensesData();
+        new Chart(this.charts.stRes, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Income',
+                    data: income,
+                    backgroundColor: 'rgba(0, 223, 162, 0.2)',
+                    borderColor: 'white',
+                    borderWidth: 2,
+                    barPercentage: 1
+                }, {
+                    label: 'Expenses',
+                    data: expenses,
+                    backgroundColor: 'rgba(255, 0, 96, 0.2)',
+                    borderColor: 'white',
+                    borderWidth: 2,
+                    barPercentage: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                      grid: {
+                        color: 'rgb(229,229,229,0.4)'
+                      }
+                    },
+                    x: {
+                      grid: {
+                        color: 'none'
+                      }
+                    }
+                },
+                legend: { display: true },
+                tooltips: {
+                    callbacks: {
+                        label: (tooltipItem, data) => {
+                            const v = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                            return Array.isArray(v) ? v[1] - v[0] : v;
+                        }
+                    }
+                }
+            }
+        });
+        this.lookClosely(this.charts.stRes, 'graph-page-1');
     }
 
     treatExchangesData() {
@@ -239,104 +377,59 @@ class Visualizer {
                     label: `Arrival Quantity`,
                     data: inQuantity,
                     fill: false,
-                    borderColor: 'rgba(70, 130, 180, 0.8)',
-                    backgroundColor: 'rgba(70, 130, 180, 0.4)',
-                    borderWidth: 2,
+                    borderColor: 'rgba(252, 103, 54, 0.6)',
+                    backgroundColor: 'rgba(251, 249, 241, 0.6)',
+                    borderWidth: 4,
                     pointRadius: 8,
-                    hoverRadius: 10
+                    hoverRadius: 12
                 },
                 {
                     label: `Departure Quantity`,
                     data: outQuantity,
                     fill: false,
-                    borderColor: 'rgba(60, 179, 113, 0.8)',
-                    backgroundColor: 'rgba(60, 179, 113, 0.4)',
-                    borderWidth: 2,
+                    borderColor: 'rgba(24, 212, 200, 0.6)',
+                    backgroundColor: 'rgba(251, 249, 241, 0.6)',
+                    borderWidth: 4,
                     pointRadius: 8,
-                    hoverRadius: 10
+                    hoverRadius: 12
                 }]
             },
             options: {
-                responsive: true,
                 hover: {
                     mode: 'nearest',
                     intersect: true
                 },
                 scales: {
                     y: {
-                        beginAtZero: true
+                      grid: {
+                        color: 'rgb(229,229,229,0.4)'
+                      }
+                    },
+                    x: {
+                      grid: {
+                        color: 'none'
+                      }
                     }
                 }
             }
         });
+        this.lookClosely(this.charts.mapEx, 'graph-page-1');
     }
-
-    treatIncomeData() {
-        let { labels, inQuantity, outQuantity } = this.treatExchangesData();
-        outQuantity.pop();
-        let result = [];
-        let total = 0;
-        for (let i = 0; i < outQuantity.length; i++) {
-            let value = (outQuantity[i] - inQuantity[i]).toFixed(2);
-            result.push(value);
-            total += parseFloat(value);
-        }
-        labels.pop();
-        labels.push('Total');
-        result.push(total.toFixed(2));
-        
-        let ctx = this.charts.stRes.getContext('2d');
-        let gradient = ctx.createLinearGradient(0, 50, 0, 700);
-        gradient.addColorStop(0, 'rgba(255, 0, 255, 0.2)');   
-        gradient.addColorStop(1, 'rgba(255, 255, 0, 0.2)');
-        return { labels, result, gradient };
-    }
-
-    lookAtTheIncome() {
-        const { labels, result, gradient } = this.treatIncomeData();
-        new Chart(this.charts.stRes, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Income and Expenses',
-                    data: result,
-                    backgroundColor: gradient,
-                    borderWidth: 2,
-                    borderColor: 'white',
-                    barPercentage: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                legend: { display: false },
-                tooltips: {
-                    callbacks: {
-                        label: (tooltipItem, data) => {
-                            const v = data.datasets[0].data[tooltipItem.index];
-                            return Array.isArray(v) ? v[1] - v[0] : v;
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    }    
 }
 
 window.onload = async function() {
     const outLooker = new LookOut();
     await outLooker.lookForData();
 
-    const visualizer = new Visualizer(outLooker.followedPath, outLooker.mappedExchanges, window.innerHeight, window.innerWidth);
-    visualizer.drawGraph();
+    const visualizer = new Visualizer(outLooker.followedPath, outLooker.mappedExchanges);
     visualizer.lookAtTheDistance();
     visualizer.lookAtTheStops();
-    visualizer.lookAtTheExchanges();
-    visualizer.lookAtTheIncome();
+    if (visualizer.mappedExchanges) {
+        visualizer.lookAtTheIncomeExpenses();
+        visualizer.lookAtTheExchanges();
+    } else {
+        visualizer.charts.stRes.style.display = 'none';
+        visualizer.charts.mapEx.style.display = 'none';
+    }
+    visualizer.drawGraph();
 }

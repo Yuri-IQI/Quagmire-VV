@@ -223,7 +223,7 @@ class CityHandler {
 
 class UserSheet {
     constructor(routesData) {
-        this.wallet = 500;
+        this.wallet = 500000000;
         this.walletDisplay = document.getElementById('user_wallet');
         this.cart = [];
         this.cityPrices = {};
@@ -239,10 +239,11 @@ class UserSheet {
     
     takeTransaction(buttonId, cityGoods, currentCity) {
         let productId = buttonId.split('_')[1];
-        let quantity = Number(document.getElementById(`quantity_${productId}`).value);
-
-        if (!isNaN(quantity) && quantity > 0 && this.wallet >= cityGoods[productId][2]*quantity) {
-            this.wallet = this.wallet - (cityGoods[productId][2]*quantity);
+        let quantityElement = document.getElementById(`quantity_${productId}`);
+        let quantity = Number(quantityElement.value);
+    
+        if (!isNaN(quantity) && quantity > 0 && this.countDecimals(quantity) <= 2 && this.wallet >= cityGoods[productId][2]*quantity) {
+            this.wallet -= cityGoods[productId][2]*quantity;
             let productInCart = this.cart.find(item => item[0] === cityGoods[productId][0]);
             if (productInCart) {
                 productInCart[6] += quantity;
@@ -250,9 +251,9 @@ class UserSheet {
                 let productWithQuantity = [...cityGoods[productId], quantity];
                 this.cart.push(productWithQuantity);
             }
-        } 
-        this.fillUserSheet(currentCity, false)
-    }
+            this.fillUserSheet(currentCity, false);
+        }
+    }    
 
     fillUserSheet(currentCity, reajust) {
         this.createWallet(currentCity)
@@ -294,25 +295,28 @@ class UserSheet {
             cartSpace.appendChild(cartItemDiv);
         });
     }
+
+    countDecimals(value) {
+        if (Number.isInteger(value)) return 0;
+        return value.toString().split(".")[1]?.length || 0;
+    }
     
     sellGood(price, availableQuantity, item, currentCity) {
-        const soldQuantity = Number(document.getElementById(`sellQuantity_${item}`).value);
+        let soldQuantity = Number(document.getElementById(`sellQuantity_${item}`).value);
         const qt = document.getElementById(`qt_${item}`);
     
-        if (soldQuantity > availableQuantity) {
-            console.log('impossible');
-        } else {
+        if (soldQuantity <= availableQuantity && soldQuantity > 0 && !isNaN(soldQuantity) && this.countDecimals(soldQuantity) <= 2) {
             this.wallet += price * soldQuantity;
             if (soldQuantity === availableQuantity || availableQuantity <= 0) {
                 this.cart.splice(item, 1);
                 this.fillUserSheet(currentCity);
             } else {
                 this.cart[item][6] -= soldQuantity;
-                qt.innerHTML = this.cart[item][6];
+                qt.innerHTML = this.cart[item][6]+'Qt';
             }
             this.createWallet(currentCity);
         }
-    }
+    }    
 
     calculateTravelledDistance(currentCityId, nextCityId) {
         if (this.cart.length > 0) {
@@ -339,7 +343,7 @@ class UserSheet {
             item[5] = Math.max(0, item[5]);
     
             if (item[5] < 20) {
-                item[5] = item[5] * 0.9;
+                item[5] = item[5] * 0.75;
             }
         }
     }
