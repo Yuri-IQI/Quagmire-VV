@@ -135,7 +135,17 @@ class CityHandler {
             town.style.top = coordinatesArray[i][1][1] + "%";
             town.id = coordinatesArray[i][0];
             town.alt = coordinatesArray[i][2]
-            town.onclick = () => this.handleCityClick(i, town, connections, coordinatesArray);
+
+            let cityName = document.createElement("p");
+            cityName.innerHTML = town.alt;
+            cityName.style.position = "absolute";
+            cityName.style.left = coordinatesArray[i][1][0] + "%";
+            cityName.style.top = coordinatesArray[i][1][1] - 0.4 + "%";
+            cityName.style.zIndex = 10;
+
+            cityName.onclick = () => this.handleCityClick(i, town, connections, coordinatesArray);
+
+            this.iconsDiv.appendChild(cityName);
             this.iconsDiv.appendChild(town);
         }
     }
@@ -223,7 +233,7 @@ class CityHandler {
 
 class UserSheet {
     constructor(routesData) {
-        this.wallet = 500000000;
+        this.wallet = 10000;
         this.walletDisplay = document.getElementById('user_wallet');
         this.cart = [];
         this.cityPrices = {};
@@ -246,7 +256,9 @@ class UserSheet {
             this.wallet -= cityGoods[productId][2]*quantity;
             let productInCart = this.cart.find(item => item[0] === cityGoods[productId][0]);
             if (productInCart) {
-                productInCart[6] += quantity;
+                productInCart[7] += quantity;
+                let qualityIncrease = (quantity * ((productInCart[6] / 100) * productInCart[5])) / 10;
+                productInCart[6] = Math.min(100, productInCart[6] + qualityIncrease);
             } else {
                 let productWithQuantity = [...cityGoods[productId], quantity];
                 this.cart.push(productWithQuantity);
@@ -267,7 +279,9 @@ class UserSheet {
                 price = this.calculateSellingPrices(item, currentCity);
                 this.currentCity = currentCity;
             } else {
-                price = this.cityPrices[currentCity][item[1]].price;
+                let qualityDifference = Math.abs(item[6] - this.cityPrices[currentCity][item[1]].quality);
+                let qualityReajust = (qualityDifference / 100) * this.cityPrices[currentCity][item[1]].price;
+                price = this.cityPrices[currentCity][item[1]].price + (qualityReajust / 10);
             }
 
             const cartItemDiv = document.createElement('div');
@@ -282,13 +296,13 @@ class UserSheet {
             const cartItemBot = document.createElement('div');
             cartItemBot.className = 'sub_cart_item';
             cartItemBot.id = `bot_${i}`;
-            cartItemBot.innerHTML = `<p id="qt_${i}" class="qt">${item[6]}Qt</p><p class="item_quality">${item[5].toFixed(2)}%</p><input type="text" id="sellQuantity_${i}" name="quantity" placeholder="Quantity">`;
+            cartItemBot.innerHTML = `<p id="qt_${i}" class="qt">${item[7]}Qt</p><p class="item_quality">${item[6].toFixed(2)}%</p><input type="text" id="sellQuantity_${i}" name="quantity" placeholder="Quantity">`;
     
             const sellButton = document.createElement('button');
             sellButton.id = `sell_${i}`;
             sellButton.type = 'submit';
             sellButton.innerText = 'Sell';
-            sellButton.addEventListener('click', () => this.sellGood(price, item[6], i, currentCity));
+            sellButton.addEventListener('click', () => this.sellGood(price, item[7], i, currentCity));
     
             cartItemBot.appendChild(sellButton);
             cartItemDiv.append(cartItemTop, cartItemBot);
@@ -311,8 +325,8 @@ class UserSheet {
                 this.cart.splice(item, 1);
                 this.fillUserSheet(currentCity);
             } else {
-                this.cart[item][6] -= soldQuantity;
-                qt.innerHTML = this.cart[item][6]+'Qt';
+                this.cart[item][7] -= soldQuantity;
+                qt.innerHTML = this.cart[item][7]+'Qt';
             }
             this.createWallet(currentCity);
         }
@@ -327,23 +341,23 @@ class UserSheet {
                 }
             });
             for (let item of this.cart) {
-                if (!item[7]) {
+                if (!item[8]) {
                     item.push(this.pathLength);
                 } else {
-                    item[7] += this.pathLength;
+                    item[8] += this.pathLength;
                 }
             }
         }
     }    
     
     calculateItemQuality(item) {
-        if (item[7]) {
-            var decrementFactor = 1 + item[7] / 1000;
-            item[5] = item[5] / decrementFactor;
-            item[5] = Math.max(0, item[5]);
+        if (item[8]) {
+            var decrementFactor = ((item[5]/10) + ((item[7] * 0.5) / 1000) + 1);
+            item[6] = item[6] / decrementFactor;
+            item[6] = Math.max(0, item[6]);
     
-            if (item[5] < 20) {
-                item[5] = item[5] * 0.75;
+            if (item[6] < 20) {
+                item[6] = item[6] * item[5];
             }
         }
     }
@@ -353,18 +367,18 @@ class UserSheet {
     
         const randomValue = Math.random() / 10;
         let adjustmentFactor = item[4].includes(Number(currentCity[0])) ? 1 - randomValue : 1 + randomValue;
-        adjustmentFactor = Math.max(0.7, Math.min(1.3, adjustmentFactor));
+        adjustmentFactor = Math.max(0.65, Math.min(1.5, adjustmentFactor));
     
         if (!this.cityPrices[currentCity]) {
             this.cityPrices[currentCity] = {};
         }
         if (!this.cityPrices[currentCity][item[1]]) {
-            this.cityPrices[currentCity][item[1]] = {price: item[2], count: 0};
+            this.cityPrices[currentCity][item[1]] = {price: item[2], count: 0, quality: item[6]};
         }
         
-        let price = (item[2] * adjustmentFactor) * (item[5] / 100);
+        let price = (item[2] * adjustmentFactor) * (item[6] / 100);
         if (this.cityPrices[currentCity][item[1]].count > 0) {
-            price *= Math.max(0.95, Math.min(1.05, adjustmentFactor));
+            price *= Math.max(0.90, Math.min(1.20, adjustmentFactor));
         }
     
         this.cityPrices[currentCity][item[1]].price = price;
@@ -422,3 +436,16 @@ window.onload = async function() {
 var zoom = new zoomInMap();
 zoom.activateZoom();
 zoom.activateDrag();
+
+//get map coordinates
+var allCoordinates = [];
+window.getCoordinates = function(event) {
+    var iconsDiv = document.getElementById("icons");
+    var rect = iconsDiv.getBoundingClientRect();
+    var x = ((event.clientX - rect.left) / rect.width) * 100;
+    var y = ((event.clientY - rect.top) / rect.height) * 100;
+    var coordinates = "ARRAY[" + x.toFixed(2) + ", " + y.toFixed(2) + "],";
+    allCoordinates.push(coordinates);
+    
+    document.getElementById("coordinates").innerHTML = allCoordinates.join('<br>');
+}    

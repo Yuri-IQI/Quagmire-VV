@@ -25,7 +25,7 @@ body {
 	user-select: none;
     background-size: cover;
     background-position: center;
-    background-image: url(../Img/Textura_Mesa.jpg);
+    background-image: url(../Img/Textura_Mesa-min.jpg);
     display: grid;
     grid-template-areas: 
         "map_board"
@@ -116,7 +116,7 @@ body {
 
 .menu .user_menu {
 	display: flex;
-	background-image: url(../Img/user_sheet.png);
+	background-image: url(../Img/user_sheet-min.png);
 	background-size: 100% 100%;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -220,7 +220,7 @@ body {
 
 .menu .city_menu {
 	display: flex;
-	background-image: url(../Img/city_menu.png);
+	background-image: url(../Img/city_menu-min.png);
 	background-size: 100% 100%;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -262,7 +262,7 @@ body {
 	grid-template-rows: repeat(auto-fill, minmax(86px, 1fr));
 	overflow: auto;
 	scrollbar-width: none;
-	width: 80%;	
+	width: 85%;	
 	align-items: flex-start;
 	margin-bottom: 6%;
 }
@@ -287,7 +287,7 @@ body {
 
 .product_data p {
 	margin: 0 0 12px 0px;
-	font-size: 20pt;
+	font-size: 16pt;
     text-shadow: 2px 2px 2px #00000063;
 }
 
@@ -334,6 +334,19 @@ body {
     transform: translate(-50%, -50%);
 	width: 2%;
 	height: 4%;
+}
+
+#icons p {
+	transform: translate(-50%, -50%);
+	opacity: 90%;
+	font-size: 8pt;
+	color: transparent;
+	margin: 0;
+}
+
+#icons p:hover {
+	color: white;
+	text-shadow: 1px 0px 1px black;
 }
 
 .icon {

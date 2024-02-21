@@ -11,9 +11,9 @@
     <section class="table">
         <div class="map_board">
             <div class="map_border"></div>
-            <div id="map_paper" class="resizable clip-path">
+            <div id="map_paper" onclick="getCoordinates(event)" class="resizable clip-path">
                 <div class="holdable"></div>
-                <img class="map_element" src="assets/Img/map_all_in_one.png" alt="All the map">
+                <img class="map_element" src="assets/Img/map_all_in_one-min.png" alt="All the map">
                 <div class="pins map_element" id="icons"></div>
                 <div class="routes"></div>
             </div>
@@ -38,7 +38,7 @@
             </div>
         </div>
     </sction>
-    <p id="coordinates"styles="display: none"></p>
+    <p id="coordinates"></p>
     <a href="data-view.html" target="_blank" rel="noopener noreferrer" id="data-page" class="data-page-link">View Data</a>
     <script type="module" src="assets/js/main.js"></script>
 </body>

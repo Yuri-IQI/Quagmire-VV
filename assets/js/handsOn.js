@@ -231,15 +231,3 @@ export class zoomInMap {
   }
 }
 
-//get map coordinates
-/*var allCoordinates = [];
-export function getCoordinates(event) {
-    var iconsDiv = document.getElementById("icons");
-    var rect = iconsDiv.getBoundingClientRect();
-    var x = ((event.clientX - rect.left) / rect.width) * 100;
-    var y = ((event.clientY - rect.top) / rect.height) * 100;
-    var coordinates = "[" + x.toFixed(2) + "%, " + y.toFixed(2) + "%],";
-    allCoordinates.push(coordinates);
-    
-    document.getElementById("coordinates").innerHTML = allCoordinates.join('<br>');
-}*/

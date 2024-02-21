@@ -45,7 +45,7 @@ class Routes:
 
             length_real = math.sqrt((B_real[0] - A_real[0])**2 + (B_real[1] - A_real[1])**2)
 
-            if length_real < 71:
+            if length_real < 78: #71
                 self.measured_connections.append(connection)
                 self.routes_length.append([[(A, connection[0][0]), (B, connection[1][0])], length_real])
 
@@ -99,8 +99,8 @@ product = Product()
 for id_city, nome, região, coordenada in fetcher.fetch("SELECT id, nomes, regiões, coords FROM cities"):
     path.cities.append([id_city, coordenada, nome, região])
 
-for id_goods, goods, price, category, cities in fetcher.fetch("SELECT id, produtos, preço, categoria, cidades FROM goods"):
-    product.goods_info.append([id_goods, goods, float(price), category, cities])
+for id_goods, goods, price, category, cities, quality in fetcher.fetch("SELECT id, produtos, preço, categoria, cidades, qualidade FROM goods"):
+    product.goods_info.append([id_goods, goods, float(price), category, cities, quality])
 
 path.way()
 measured_connections, routes_length = path.measure()
@@ -146,7 +146,6 @@ class DataProcessing:
                     self.followed_path[index] = (j[0], i[1])
 
 processor = DataProcessing()
-
 @app.route('/get_data', methods=['GET'])
 def get_data():
     pack = [measured_connections, established_connections, path.cities, product.goods_info, routes_length]
