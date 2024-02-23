@@ -1,17 +1,33 @@
 import { initResizeElement, initDragElement, ZoomInMap } from './handsOn.js';
 var travelLog = [[]];
 
-class Fetcher {
-    constructor() {
-        this.data;
+class JsonFetcher {
+    constructor(url) {
+      this.url = url;
+      this.data = null;
     }
-
-    async fetchData(url, callback) {
-        const response = await fetch(url);
-        const data = await response.json();
-        this.data = callback(data);
+  
+    async fetchData() {
+      try {
+        const response = await fetch(this.url);
+        if (!response.ok) {
+          throw new Error(`Error fetching data: ${response.status}`);
+        }
+        const jsonData = await response.json();
+        this.data = {
+          measures: jsonData.measures,
+          connections: jsonData.connections,
+          coordinatesArray: jsonData.paths,
+          products: jsonData.goods,
+          routesLength: jsonData.routes,
+        };
+        return this.data;
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        throw error;
+      }
     }
-}
+}  
 
 class CitySheetBuilder {
     constructor(products, userSheet) {
@@ -407,16 +423,16 @@ function sendData() {
 }
 
 window.onload = async function() {
-    const fetcher = new Fetcher();
+    const fetcher = new JsonFetcher("data.json");
 
-    await fetcher.fetchData('http://127.0.0.1:5000/get_data', data => {
-        var measures = data[0];
-        var connections = data[1];
-        var coordinatesArray = data[2];
-        var products = data[3];
-        var routesLength = data[4]
-        return { measures, connections, coordinatesArray, products, routesLength };
+    fetcher.fetchData()
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => {
+        console.error("Error:", error);
     });
+
     const userSheet = new UserSheet(fetcher.data.routesLength);
     userSheet.createWallet(null);
 

@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import psycopg2
 import math
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -146,10 +147,19 @@ class DataProcessing:
                     self.followed_path[index] = (j[0], i[1])
 
 processor = DataProcessing()
-@app.route('/get_data', methods=['GET'])
-def get_data():
-    pack = [measured_connections, established_connections, path.cities, product.goods_info, routes_length]
-    return jsonify(pack)
+
+def create_json():
+    data = {'measures': measured_connections, 'connections': established_connections, 'paths': path.cities, 'goods': product.goods_info, 'routes': routes_length}
+    with open('data.json', 'w') as d:
+        json.dump(data, d)
+    print("we are actually doing it")
+
+create_json()
+#@app.route('/get_data', methods=['GET'])
+#def get_data():
+#    pack = [measured_connections, established_connections, path.cities, product.goods_info, routes_length]
+#    print(pack)
+#    return jsonify(pack)
 
 last_error = None
 
