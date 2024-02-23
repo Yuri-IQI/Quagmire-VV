@@ -156,85 +156,92 @@ export function initDragElement() {
   }
 }
 
-export class zoomInMap {
+export class ZoomInMap {
   constructor() {
-      this.cityRegion = document.querySelector('#city_region');
-      this.mapPaper = document.querySelector('#map_paper');
-      this.mapElements = document.querySelectorAll('.map_element');
-      this.isZoomed = false;
-      this.isDragging = false;
-      this.startX = 0;
-      this.startY = 0;
+    this.regionCenters = {
+      'Siourin': `26% 96%`,
+      'Arvheignin': `57% 88%`
+    };
+    this.cityRegion = document.querySelector('#city_region');
+    this.mapPaper = document.querySelector('#map_paper');
+    this.mapElements = document.querySelectorAll('.map_element');
+    this.isZoomed = false;
+    this.isDragging = false;
+    this.lastClickedRegion = null;
   }
 
   activateZoom() {
-      this.cityRegion.addEventListener('click', () => {
-          this.mapElements.forEach((mapElement) => {
-              if (!this.isZoomed) {
-                  mapElement.style.transform = 'scale(calc(0.1 * 45))';
-                  mapElement.style.transformOrigin = `26% 96%`;
-                  this.mapPaper.style.cssText = `
-                      -webkit-mask-image: url('assets/Img/border.svg');
-                      -webkit-mask-repeat: no-repeat;
-                      -webkit-mask-position: center;
-                      -webkit-mask-size: 100% 100%;
-                      mask-image: url('assets/Img/border.svg');
-                      mask-repeat: no-repeat;
-                      mask-position: center;
-                      mask-size: 100% 100%;
-                      mask-border: url('assets/Img/border.svg') 30 / 1 / 0 stretch;
-                  `;
-              } else {
-                  mapElement.style.transform = '';
-                  mapElement.style.transformOrigin = '';
-                  this.mapPaper.style.cssText = '';
-              }
-          });
-          if (!this.isZoomed) {
-              this.mapPaper.style.cursor = 'grab';
-          } else {
-              this.mapPaper.style.cursor = '';
-          }
-          this.isZoomed = !this.isZoomed;
+    this.cityRegion.addEventListener('click', () => {
+      const currentRegion = this.cityRegion.textContent;
+      const isSameRegion = currentRegion === this.lastClickedRegion;
+
+      this.mapElements.forEach((mapElement) => {
+        if (!this.isZoomed && !isSameRegion) {
+          mapElement.style.transform = 'scale(calc(0.1 * 35))';
+          mapElement.style.transformOrigin = this.regionCenters[currentRegion];
+          this.mapPaper.style.cssText = `
+            -webkit-mask-image: url('assets/Img/border.svg');
+            -webkit-mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            -webkit-mask-size: 100% 100%;
+            mask-image: url('assets/Img/border.svg');
+            mask-repeat: no-repeat;
+            mask-position: center;
+            mask-size: 100% 100%;
+            mask-border: url('assets/Img/border.svg') 30 / 1 / 0 stretch;
+          `;
+          this.lastClickedRegion = currentRegion;
+        } else if (this.isZoomed && !isSameRegion) {
+          mapElement.style.transform = 'scale(calc(0.1 * 35))';
+          mapElement.style.transformOrigin = this.regionCenters[currentRegion];
+        } else {
+          mapElement.style.transform = '';
+          mapElement.style.transformOrigin = '';
+          this.mapPaper.style.cssText = '';
+          this.lastClickedRegion = '';
+        }
       });
+
+      this.mapPaper.style.cursor = this.isZoomed ? '' : 'grab';
+      this.isZoomed = !this.isZoomed;
+    });
   }
 
   activateDrag() {
-    let startX, startY, lastX, lastY, isDragging = false;
+    let isDragging = false;
+    let lastPosition = { x: 0, y: 0 };
 
     const handleMouseDown = (e) => {
-        startX = lastX = e.clientX;
-        startY = lastY = e.clientY;
-        isDragging = true;
+      lastPosition = { x: e.clientX, y: e.clientY };
+      isDragging = true;
     };
 
     const handleMouseMove = (e) => {
-        if (!this.isZoomed || !isDragging) return;
-        if (e.clientX === lastX && e.clientY === lastY) return;
+      if (!this.isZoomed || !isDragging) return;
+      if (e.clientX === lastPosition.x && e.clientY === lastPosition.y) return;
 
-        const dx = e.clientX - startX;
-        const dy = e.clientY - startY;
-        this.mapPaper.style.cursor = 'grabbing';
+      const dx = e.clientX - lastPosition.x;
+      const dy = e.clientY - lastPosition.y;
+      this.mapPaper.style.cursor = 'grabbing';
 
-        this.mapElements.forEach((mapElement) => {
-            let [x, y] = mapElement.style.transformOrigin.split(' ').map(parseFloat);
+      this.mapElements.forEach((mapElement) => {
+        let [x, y] = mapElement.style.transformOrigin.split(' ').map(parseFloat);
 
-            x -= dx * 0.005;
-            y -= dy * 0.005;
+        x -= dx * 0.005;
+        y -= dy * 0.005;
 
-            x = Math.max(5.85, Math.min(93.27, x));
-            y = Math.max(3.6, Math.min(96.54, y));
+        x = Math.max(5.85, Math.min(93.27, x));
+        y = Math.max(3.6, Math.min(96.54, y));
 
-            mapElement.style.transformOrigin = `${x}% ${y}%`;
-        });
+        mapElement.style.transformOrigin = `${x}% ${y}%`;
+      });
 
-        this.mapPaper.style.cursor = 'grab';
-        lastX = e.clientX;
-        lastY = e.clientY;
+      this.mapPaper.style.cursor = 'grab';
+      lastPosition = { x: e.clientX, y: e.clientY };
     };
 
     const handleMouseUp = () => {
-        isDragging = false;
+      isDragging = false;
     };
 
     this.mapPaper.addEventListener('mousedown', handleMouseDown);
@@ -243,4 +250,3 @@ export class zoomInMap {
     this.mapPaper.addEventListener('contextmenu', (e) => e.preventDefault());
   }
 }
-

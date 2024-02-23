@@ -1,4 +1,4 @@
-import { initResizeElement, initDragElement, zoomInMap } from './handsOn.js';
+import { initResizeElement, initDragElement, ZoomInMap } from './handsOn.js';
 var travelLog = [[]];
 
 class Fetcher {
@@ -191,8 +191,9 @@ class CityHandler {
     }
 
     updateTravelLog(i, town, coordinatesArray) {
+        var currentCityArray = coordinatesArray.find(city => city.includes(parseInt(this.currentSelectedCity.id))); 
         travelLog[0].push(
-            [this.currentSelectedCity.id, this.currentSelectedCity.alt, coordinatesArray[i][3]],
+            [this.currentSelectedCity.id, this.currentSelectedCity.alt, currentCityArray[3]],
             [town.id, town.alt, coordinatesArray[i][3]]
         );
         this.userSheet.fillUserSheet([town.id, town.alt], true);
@@ -232,7 +233,7 @@ class CityHandler {
 
 class UserSheet {
     constructor(routesData) {
-        this.wallet = 10000;
+        this.wallet = 100;
         this.walletDisplay = document.getElementById('user_wallet');
         this.cart = [];
         this.cityPrices = {};
@@ -432,7 +433,7 @@ window.onload = async function() {
     initResizeElement();
     sendData();
 }
-var zoom = new zoomInMap();
+var zoom = new ZoomInMap();
 zoom.activateZoom();
 zoom.activateDrag();
 

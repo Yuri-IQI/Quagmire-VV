@@ -211,7 +211,7 @@ class Visualizer {
                     return {
                         label: regionData.region,
                         data: regionData.data.map((city, oneMoreIndex) => {
-                            const commonFactor = regionLength * dataLength + (((oneMoreIndex+1)**-1) / (index+1));
+                            const commonFactor = regionLength + dataLength + (((oneMoreIndex+1)**-1) / (index+1));
                             backgroundColor: index
                             return {
                                 x: commonFactor/10,

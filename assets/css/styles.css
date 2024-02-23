@@ -247,13 +247,9 @@ body {
 
 .city_info p {
 	font-family: 'FantaisieArtistique', 'Hardinge', sans-serif;
-	font-size: calc(32px + 2vmin);
+	font-size: calc(24px + 2vmin);
 	margin: 0;
 	z-index: 11;
-}
-
-#city_region {
-	margin-right: 5%;
 }
 
 .market {
@@ -342,6 +338,8 @@ body {
 	font-size: 12pt;
 	color: transparent;
 	margin: 0;
+	width: 90px;
+	text-align: center;
 }
 
 #icons p:hover {
