@@ -4,7 +4,7 @@ var travelLog = [[]];
 class JsonFetcher {
     constructor(url) {
       this.url = url;
-      this.data = null;
+      this.data;
     }
   
     async fetchData() {
@@ -27,7 +27,7 @@ class JsonFetcher {
         throw error;
       }
     }
-}  
+}
 
 class CitySheetBuilder {
     constructor(products, userSheet) {
@@ -425,29 +425,28 @@ function sendData() {
 window.onload = async function() {
     const fetcher = new JsonFetcher("data.json");
 
-    fetcher.fetchData()
-    .then(data => {
+    try {
+        const data = await fetcher.fetchData();
         console.log(data);
-    })
-    .catch(error => {
+
+        const userSheet = new UserSheet(data.routesLength);
+        userSheet.createWallet(null);
+
+        const citySheet = new CitySheetBuilder(data.products, userSheet);
+        var [citySize, marketSize] = citySheet.scaleCity(data.connections);
+
+        const city = new CityHandler(citySheet, userSheet);
+        city.createCities(data.connections, data.coordinatesArray)
+
+        city.createSvg();
+        city.drawLines(data.measures);
+
+        initDragElement();
+        initResizeElement();
+        sendData();
+    } catch (error) {
         console.error("Error:", error);
-    });
-
-    const userSheet = new UserSheet(fetcher.data.routesLength);
-    userSheet.createWallet(null);
-
-    const citySheet = new CitySheetBuilder(fetcher.data.products, userSheet);
-    var [citySize, marketSize] = citySheet.scaleCity(fetcher.data.connections);
-
-    const city = new CityHandler(citySheet, userSheet);
-    city.createCities(fetcher.data.connections, fetcher.data.coordinatesArray)
-
-    city.createSvg();
-    city.drawLines(fetcher.data.measures);
-
-    initDragElement();
-    initResizeElement();
-    sendData();
+    }
 }
 var zoom = new ZoomInMap();
 zoom.activateZoom();
