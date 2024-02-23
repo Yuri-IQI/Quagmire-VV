@@ -45,7 +45,7 @@ class Routes:
 
             length_real = math.sqrt((B_real[0] - A_real[0])**2 + (B_real[1] - A_real[1])**2)
 
-            if length_real < 78: #71
+            if length_real < 78 and (not(connection[0][2] == 'Eil Grumm' and connection[1][2] == 'Nuomin' )):
                 self.measured_connections.append(connection)
                 self.routes_length.append([[(A, connection[0][0]), (B, connection[1][0])], length_real])
 

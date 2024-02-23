@@ -94,7 +94,6 @@ class CitySheetBuilder {
 
 class CityHandler {
     constructor(citySheet, userSheet) {
-        this.cityIcon = 'assets/Img/icone_cidade.svg';
         this.currentSelectedCity = null;
         this.iconsDiv = document.getElementById("icons");
         this.citySheet = citySheet;
@@ -130,7 +129,7 @@ class CityHandler {
     createCities(connections, coordinatesArray) {
         for (let i = 0; i < coordinatesArray.length; i++) {
             let town = document.createElement("img");
-            town.src = this.cityIcon;
+            town.src = i % 2 == 0 ? 'assets/Img/icone_cidade.svg' : 'assets/Img/um_pouco_de_diferença.svg';
             town.style.left = coordinatesArray[i][1][0] + "%";
             town.style.top = coordinatesArray[i][1][1] + "%";
             town.id = coordinatesArray[i][0];
@@ -438,7 +437,7 @@ zoom.activateZoom();
 zoom.activateDrag();
 
 //get map coordinates
-var allCoordinates = [];
+/*var allCoordinates = [];
 window.getCoordinates = function(event) {
     var iconsDiv = document.getElementById("icons");
     var rect = iconsDiv.getBoundingClientRect();
@@ -448,4 +447,4 @@ window.getCoordinates = function(event) {
     allCoordinates.push(coordinates);
     
     document.getElementById("coordinates").innerHTML = allCoordinates.join('<br>');
-}    
+}    */

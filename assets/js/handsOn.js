@@ -200,34 +200,47 @@ export class zoomInMap {
   }
 
   activateDrag() {
-    this.mapPaper.addEventListener('mousedown', (e) => {
-        this.startX = e.clientX;
-        this.startY = e.clientY;
-        this.isDragging = true;
-    });
-    this.mapPaper.addEventListener('mousemove', (e) => {
-        if (this.isZoomed && this.isDragging) {
-            const dx = e.clientX - this.startX;
-            const dy = e.clientY - this.startY;
-            this.mapPaper.style.cursor = 'grabbing';
+    let startX, startY, lastX, lastY, isDragging = false;
 
-            this.mapElements.forEach((mapElement) => {
-                let [x, y] = mapElement.style.transformOrigin.split(' ').map(parseFloat);
+    const handleMouseDown = (e) => {
+        startX = lastX = e.clientX;
+        startY = lastY = e.clientY;
+        isDragging = true;
+    };
 
-                x -= dx * 0.007;
-                y -= dy * 0.007;
+    const handleMouseMove = (e) => {
+        if (!this.isZoomed || !isDragging) return;
+        if (e.clientX === lastX && e.clientY === lastY) return;
 
-                x = Math.max(5.85, Math.min(93.27, x));
-                y = Math.max(3.6, Math.min(96.54, y));
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        this.mapPaper.style.cursor = 'grabbing';
 
-                mapElement.style.transformOrigin = `${x}% ${y}%`;
-            });
-            this.mapPaper.style.cursor = 'grab';
-        }
-    });
-    this.mapPaper.addEventListener('mouseup', () => {
-        this.isDragging = false;
-    });
+        this.mapElements.forEach((mapElement) => {
+            let [x, y] = mapElement.style.transformOrigin.split(' ').map(parseFloat);
+
+            x -= dx * 0.005;
+            y -= dy * 0.005;
+
+            x = Math.max(5.85, Math.min(93.27, x));
+            y = Math.max(3.6, Math.min(96.54, y));
+
+            mapElement.style.transformOrigin = `${x}% ${y}%`;
+        });
+
+        this.mapPaper.style.cursor = 'grab';
+        lastX = e.clientX;
+        lastY = e.clientY;
+    };
+
+    const handleMouseUp = () => {
+        isDragging = false;
+    };
+
+    this.mapPaper.addEventListener('mousedown', handleMouseDown);
+    this.mapPaper.addEventListener('mousemove', handleMouseMove);
+    this.mapPaper.addEventListener('mouseup', handleMouseUp);
+    this.mapPaper.addEventListener('contextmenu', (e) => e.preventDefault());
   }
 }
 
