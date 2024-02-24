@@ -1,4 +1,5 @@
 # Quagmire
+[PT-BR](README-pt-br.md)
 
 This is Quagmire, a browser game about trading goods between cities in a fictional world through a map.
 The game also contains a page with charts for visualizing some of the interactions with the world through data.
