@@ -37,3 +37,6 @@ Here is a list of actions that can be done in the game:
 7. **Zoom Mode**: Click on a city region name (e.g., Siourin) to enter zoom mode, click the name again to use normal mode.
 8. **Chart Selection**: On the charts page, click in one of the charts to see it in full screen.
 9. **Dataset Selection**: On the charts page, click on a dataset name to stop showing it on the chart.
+
+## Why Does This Exists?
+Quagmire is a project that merges my passion for worldbuilding with my learning and experience in web development. It motivates me to discover new facets of software development and acquire new abilities while creating something that I find very fun and satisfying.
