@@ -1,7 +1,7 @@
 # Quagmire
 [![pt-br](https://img.shields.io/badge/lang-pt--br-green.svg)](README-pt-br.md)
 
-This is Quagmire, a browser game about trading goods between cities in a fictional world through a map.
+This is Quagmire, a map browser game about travelling between cities of a fictional world while trading goods.
 The game also contains a page with charts for visualizing some of the interactions with the world through data.
 
 ## Online Access
