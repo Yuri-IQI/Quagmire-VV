@@ -31,11 +31,13 @@ class DataProcessing {
         this.followedPath = [];
 
         for (let index = 0; index < this.travelLog[0].length; index++) {
-            const location = this.travelLog[0][index];
-            if (!this.followedPath.length || location !== this.followedPath[this.followedPath.length - 1][0]) {
-                this.followedPath.push([location, index < (this.travelLog[0].length - 1) ? 'trace' : []]);
+            const place = this.travelLog[0][index];
+            if (!this.followedPath.length) {
+                this.followedPath.push([place, index < (this.travelLog[0].length - 1) ? 'trace' : []]);
+            } else if (!(this.followedPath[this.followedPath.length-1][0][0] == place[0])) {
+                this.followedPath.push([place, index < (this.travelLog[0].length - 1) ? 'trace' : []]);
             }
-        }
+        }        
         this.calculateRoute();
 
         return this.followedPath;
