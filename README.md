@@ -1,7 +1,12 @@
 # Quagmire
 
-This is Quagmire, a Map Browser Game that presents interfaces through which you can interact with a fictional world by trading goods.
-Quagmire also has an offline version for visualising your interaction with its world through charts.
+This is Quagmire, a browser game about trading goods between cities of a fictional world through a map.
+The game also contains a page with charts for visualising some of the interactions with the world through data.
+
+
+## Online Access
+The site is currently online on GitHub Pages, to access it [click here](https://yuri-crt.github.io/Quagmire-VV/).
+The page might take a while to render and the site was developed for the firefox desktop browser, but it should work on other browsers as well.
 
 ## Actions
 The game allow the following actions:
@@ -12,8 +17,6 @@ The game allow the following actions:
 4. **Visualising Data**: Click on the 'View Data' button on the top left corner to access the data viewing page.
 5. **Drag Paper**: Hold 'Shift' and the top of any sheet to drag it.
 6. **Resize**: Hold 'R' and the bottom or right corner of any sheet to resize it.
-7. **Zoom Mode**: Click on a city region name (e.g., Siourin) to enter zoom mode.
-
-## Quick Start
-The site is currently online on GitHub Pages, to access it click on this link: [The Mire](https://yuri-crt.github.io/Quagmire-VV/)
-
+7. **Zoom Mode**: Click on a city region name (e.g., Siourin) to enter zoom mode, click the name again to use normal mode.
+8. **Chart Selection**: On the charts page, click in one of the charts for seeing fullscreen.
+9. **Dataset Selection**: On the charts page, click on a dataset name for stop showing it on the chart.
