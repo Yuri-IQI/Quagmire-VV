@@ -1,11 +1,6 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
 import psycopg2
 import math
 import json
-
-app = Flask(__name__)
-CORS(app)
 
 class Fetcher:
     def __init__(self):
@@ -149,35 +144,10 @@ class DataProcessing:
 processor = DataProcessing()
 
 #Create data.json
-#def create_json():
-#    data = {'measures': measured_connections, 'connections': established_connections, 'paths': path.cities, 'goods': product.goods_info, 'routes': routes_length}
-#    with open('data.json', 'w') as d:
-#        json.dump(data, d)
-#    print("we are actually doing it")
-#
-#create_json()
+def create_json():
+    data = {'measures': measured_connections, 'connections': established_connections, 'paths': path.cities, 'goods': product.goods_info, 'routes': routes_length}
+    with open('data.json', 'w') as d:
+        json.dump(data, d)
+    print("we are actually doing it")
 
-last_error = None
-
-@app.route('/send_data', methods=['POST'])
-def send_data():
-    global last_error
-    travel_log = request.get_json()
-    try:
-        processor.control_data(travel_log)
-    except Exception as e:
-        last_error = str(e)
-        print('Problem in Travel Log:', last_error)
-    return jsonify({'status': 'success'}), 200
-
-@app.route('/visualize_data', methods=['GET'])
-def visualize_data():
-    global last_error
-    if last_error is not None:
-        return jsonify({'error': last_error}), 500
-    else:
-        return jsonify({'followed_path': processor.followed_path},
-                       {'exchanges': processor.mapped_exchanges})
-
-if __name__ == '__main__':
-    app.run(debug=True)
+create_json()
