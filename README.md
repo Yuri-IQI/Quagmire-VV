@@ -8,8 +8,26 @@ The game also contains a page with charts for visualising some of the interactio
 The site is currently online on GitHub Pages, to access it [click here](https://yuri-crt.github.io/Quagmire-VV/).
 The page might take a while to render and the site was developed for the firefox desktop browser, but it should work on other browsers as well.
 
+## The Repository
+For running the site locally, first use this command for cloning the repository:
+
+
+```
+gh repo clone Yuri-crt/Quagmire-VV
+```
+
+Then, for running the main branch, which runs with the backend, it is necessary to install flask for python:
+
+```
+pip install flask
+```
+
+After, just run mire.py and then launch the index.html.
+
+For running the stand-alone-front locally, it should be enough to just clone the repository.
+
 ## Actions
-The game allow the following actions:
+Here is a list of actions that can be done in the game:
 
 1. **Navigation**: Click on the city icons to access their markets and move from one city to another.
 2. **Buy**: On the city sheet, select a quantity of a good in the market section, then click on the 'Buy' button.
