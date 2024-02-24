@@ -11,7 +11,7 @@ class JsonFetcher {
       try {
         const response = await fetch(this.url);
         if (!response.ok) {
-          throw new Error(`Error fetching data: ${response.status}`);
+          throw new Error(`No response: ${response.status}`);
         }
         const jsonData = await response.json();
         this.data = {
@@ -260,7 +260,6 @@ class UserSheet {
 
     createWallet() {
         this.walletDisplay.innerHTML = "Wallet: " + this.wallet.toFixed(2);
-        console.log(travelLog);
     }
     
     takeTransaction(buttonId, cityGoods, currentCity) {
@@ -404,30 +403,11 @@ class UserSheet {
     }    
 }
 
-function sendData() {
-    document.getElementById('data-page').addEventListener('click', async () => {
-        console.log(travelLog);
-        await fetch('http://127.0.0.1:5000/send_data', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(travelLog),
-        })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-    });
-}
-
 window.onload = async function() {
     const fetcher = new JsonFetcher("data.json");
 
     try {
         const data = await fetcher.fetchData();
-        console.log(data);
 
         const userSheet = new UserSheet(data.routesLength);
         userSheet.createWallet(null);
@@ -443,14 +423,22 @@ window.onload = async function() {
 
         initDragElement();
         initResizeElement();
-        sendData();
+        const stringRoutesLength = JSON.stringify(data.routesLength);
+        localStorage.setItem('routesLengthString', stringRoutesLength);
     } catch (error) {
-        console.error("Error:", error);
+        console.error("Not going well:", error);
     }
 }
 var zoom = new ZoomInMap();
 zoom.activateZoom();
 zoom.activateDrag();
+
+//send the travel log
+const dataPage = document.getElementById('data-page');
+dataPage.addEventListener('click', () => {
+    const stringTravelLog = JSON.stringify(travelLog);
+    localStorage.setItem('travelLogString', stringTravelLog);
+});
 
 //get map coordinates
 /*var allCoordinates = [];

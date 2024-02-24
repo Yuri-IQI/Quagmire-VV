@@ -148,18 +148,14 @@ class DataProcessing:
 
 processor = DataProcessing()
 
-def create_json():
-    data = {'measures': measured_connections, 'connections': established_connections, 'paths': path.cities, 'goods': product.goods_info, 'routes': routes_length}
-    with open('data.json', 'w') as d:
-        json.dump(data, d)
-    print("we are actually doing it")
-
-create_json()
-#@app.route('/get_data', methods=['GET'])
-#def get_data():
-#    pack = [measured_connections, established_connections, path.cities, product.goods_info, routes_length]
-#    print(pack)
-#    return jsonify(pack)
+#Create data.json
+#def create_json():
+#    data = {'measures': measured_connections, 'connections': established_connections, 'paths': path.cities, 'goods': product.goods_info, 'routes': routes_length}
+#    with open('data.json', 'w') as d:
+#        json.dump(data, d)
+#    print("we are actually doing it")
+#
+#create_json()
 
 last_error = None
 

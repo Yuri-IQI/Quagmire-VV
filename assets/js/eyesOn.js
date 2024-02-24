@@ -1,32 +1,57 @@
 Chart.defaults.color = "lightgray";
 
-class LookOut {
+const retrievedStringTravelLog = localStorage.getItem('travelLogString');
+const retrievedStringRoutesLength = localStorage.getItem('routesLengthString');
+const TravelLog = JSON.parse(retrievedStringTravelLog);
+const routesLength = JSON.parse(retrievedStringRoutesLength);
+
+class DataProcessing {
     constructor() {
-        this.foundData;
-        this.followedPath;
-        this.mappedExchanges;
+        this.travelLog = [];
+        this.followedPath = [];
+        this.mappedExchanges = {};
     }
 
-    async lookForData() {
-        try {
-            const response = await fetch('http://127.0.0.1:5000/visualize_data');
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+    controlData(travelLog) {
+        this.mappedExchanges = travelLog[1];
+        if (!this.travelLog.length) {
+            this.travelLog = travelLog;
+            this.processRoute();
+        } else if (this.travelLog[0] !== travelLog[0]) {
+            if (this.travelLog[0].substring(0, travelLog[0].length) === travelLog[0]) {
+                this.travelLog[0] += travelLog[0].substring(this.travelLog[0].length);
+            } else {
+                this.travelLog[0] = travelLog[0];
             }
-            this.foundData = await response.json();
-            this.followedPath = this.foundData[0].followed_path;
-            this.mappedExchanges = this.foundData[1].exchanges;
-        } catch (error) {
-            let travelLogWarning = document.getElementById('empty-travel-log');
-            travelLogWarning.style.display = 'block';
-            travelLogWarning.style.color = 'white';
-            document.querySelectorAll('.graph-page').forEach((page) => {
-                page.style.display = 'none';
-            });
-            console.log(error);
-            throw error;
+            this.processRoute();
         }
-    }    
+    }
+
+    processRoute() {
+        this.followedPath = [];
+
+        for (let index = 0; index < this.travelLog[0].length; index++) {
+            const location = this.travelLog[0][index];
+            if (!this.followedPath.length || location !== this.followedPath[this.followedPath.length - 1][0]) {
+                this.followedPath.push([location, index < (this.travelLog[0].length - 1) ? 'trace' : []]);
+            }
+        }
+        this.calculateRoute();
+
+        return this.followedPath;
+    }
+
+    calculateRoute() {
+        for (let index = 0; index < this.followedPath.length - 1; index++) {
+            const j = this.followedPath[index];
+            for (const i of routesLength) {
+                if ((i[0][0][1] === parseInt(j[0][0]) && i[0][1][1] === parseInt(this.followedPath[index + 1][0][0])) ||
+                    (i[0][1][1] === parseInt(j[0][0]) && i[0][0][1] === parseInt(this.followedPath[index + 1][0][0]))) {
+                    this.followedPath[index] = [j[0], i[1]];
+                }
+            }
+        }
+    }
 }
 
 class Visualizer {
@@ -418,10 +443,10 @@ class Visualizer {
 }
 
 window.onload = async function() {
-    const outLooker = new LookOut();
-    await outLooker.lookForData();
+    const processor = new DataProcessing();
+    processor.controlData(TravelLog);
 
-    const visualizer = new Visualizer(outLooker.followedPath, outLooker.mappedExchanges);
+    const visualizer = new Visualizer(processor.followedPath, processor.mappedExchanges);
     visualizer.lookAtTheDistance();
     visualizer.lookAtTheStops();
     if (visualizer.mappedExchanges) {
