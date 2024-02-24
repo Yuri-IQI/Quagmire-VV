@@ -433,6 +433,12 @@ var zoom = new ZoomInMap();
 zoom.activateZoom();
 zoom.activateDrag();
 
+//loading
+window.addEventListener('load', function() {
+    document.getElementById('loading').style.display = 'none';
+});
+
+
 //send the travel log
 const dataPage = document.getElementById('data-page');
 dataPage.addEventListener('click', () => {
