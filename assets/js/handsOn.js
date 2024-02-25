@@ -160,7 +160,14 @@ export class ZoomInMap {
   constructor() {
     this.regionCenters = {
       'Siourin': `26% 96%`,
-      'Arvheignin': `57% 88%`
+      'Arvheignin': `57% 88%`,
+      'Etreiterin': `83.2% 66.8%`,
+      'Leussein Aeiq': `93.17% 71.7%`,
+      'Lodsin Oufiq': `93.27% 89.4%`,
+      'Qa Aierin': `86% 32.75%`,
+      'Ausspain': `37% 17.25%`,
+      'Prigvin': `10% 10.35%`,
+      'Iousaeryin': `5.85% 56%`
     };
     this.cityRegion = document.querySelector('#city_region');
     this.mapPaper = document.querySelector('#map_paper');
@@ -227,8 +234,8 @@ export class ZoomInMap {
       this.mapElements.forEach((mapElement) => {
         let [x, y] = mapElement.style.transformOrigin.split(' ').map(parseFloat);
 
-        x -= dx * 0.005;
-        y -= dy * 0.005;
+        x -= dx * 0.05;
+        y -= dy * 0.05;
 
         x = Math.max(5.85, Math.min(93.27, x));
         y = Math.max(3.6, Math.min(96.54, y));
