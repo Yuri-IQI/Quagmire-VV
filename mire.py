@@ -148,6 +148,5 @@ def create_json():
     data = {'measures': measured_connections, 'connections': established_connections, 'paths': path.cities, 'goods': product.goods_info, 'routes': routes_length}
     with open('data.json', 'w') as d:
         json.dump(data, d)
-    print("we are actually doing it")
 
 create_json()
