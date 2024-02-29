@@ -436,6 +436,7 @@ zoom.activateDrag();
 //loading
 window.addEventListener('load', function() {
     document.getElementById('loading').style.display = 'none';
+    document.querySelector('body').style.overflow = 'auto';
 });
 
 

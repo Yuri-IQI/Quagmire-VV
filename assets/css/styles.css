@@ -22,6 +22,7 @@ body {
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
+	overflow: hidden;
 	user-select: none;
     background-size: cover;
     background-position: center;
@@ -381,7 +382,7 @@ svg {
 	z-index: 1000;
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: space-around;
 }
 
 #loading img {
@@ -390,6 +391,9 @@ svg {
 	animation-duration: 5000ms;
 	animation-iteration-count: infinite;
 	animation-timing-function: linear;
+}
+#loading h1 {
+	font-family: Humanistic, Verdana, Geneva, Tahoma, sans-serif;
 }
 @keyframes spin {
     from {
