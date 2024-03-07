@@ -302,47 +302,31 @@ class Visualizer {
     treatIncomeExpensesData() {
         let { labels, inQuantity, outQuantity } = this.treatExchangesData();
         outQuantity.pop();
-        let income = [];
-        let expenses = [];
-        let totalIncome = 0;
-        let totalExpenses = 0;
+        let balance = [];
+        let totalBalance = 0;
         for (let i = 0; i < outQuantity.length; i++) {
             let value = (outQuantity[i] - inQuantity[i]).toFixed(2);
-            if (value >= 0) {
-                income.push(value);
-                expenses.push(0);
-                totalIncome += parseFloat(value);
-            } else {
-                income.push(0);
-                expenses.push(value);
-                totalExpenses += parseFloat(value);
-            }
+            balance.push(value);
+            totalBalance += parseFloat(value);
         }
         labels.pop();
         labels.push('Total');
-        income.push(totalIncome.toFixed(2));
-        expenses.push(totalExpenses.toFixed(2));
+        balance.push(totalBalance.toFixed(2));
         
-        return { labels, income, expenses };
+        return { labels, balance };
     }
     
     lookAtTheIncomeExpenses() {
-        const { labels, income, expenses } = this.treatIncomeExpensesData();
+        const { labels, balance } = this.treatIncomeExpensesData();
+        let colors = balance.map(value => value >= 0 ? 'rgba(0, 223, 162, 0.2)' : 'rgba(255, 0, 96, 0.2)');
         new Chart(this.charts.stRes, {
             type: 'bar',
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Income',
-                    data: income,
-                    backgroundColor: 'rgba(0, 223, 162, 0.2)',
-                    borderColor: 'white',
-                    borderWidth: 2,
-                    barPercentage: 1
-                }, {
-                    label: 'Expenses',
-                    data: expenses,
-                    backgroundColor: 'rgba(255, 0, 96, 0.2)',
+                    label: 'Balance',
+                    data: balance,
+                    backgroundColor: colors,
                     borderColor: 'white',
                     borderWidth: 2,
                     barPercentage: 1
@@ -373,7 +357,7 @@ class Visualizer {
             }
         });
         this.lookClosely(this.charts.stRes, 'graph-page-1');
-    }
+    }    
 
     treatExchangesData() {
         let labels = [];
