@@ -5,14 +5,14 @@ This is Quagmire, a map browser game about travelling between cities of a fictio
 The game also contains a page with charts for visualizing some of the interactions with the world through data.
 
 ## Online Access
-The site is currently online on GitHub Pages, to access it, [click here](https://yuri-crt.github.io/Quagmire-VV/).
+The site is currently online on GitHub Pages, to access it, [click here](https://yuri-|Q|.github.io/Quagmire-VV/).
 The page might take a while to render, and the site was developed for the Firefox desktop browser, but it should work on other browsers as well.
 
 ## Run Locally
 For running the site locally, first use this command for cloning the repository:
 
 ```
-gh repo clone Yuri-crt/Quagmire-VV
+gh repo clone Yuri-|Q|/Quagmire-VV
 ```
 
 Then, for running the main branch, which runs with the backend, it is necessary to install Flask for Python:
