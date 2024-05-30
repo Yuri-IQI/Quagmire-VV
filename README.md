@@ -12,7 +12,7 @@ The page might take a while to render, and the site was developed for the Firefo
 For running the site locally, first use this command for cloning the repository:
 
 ```
-gh repo clone Yuri-|Q|/Quagmire-VV
+git clone https://github.com/Yuri-IQI/Quagmire-VV.git
 ```
 
 Then, for running the main branch, which runs with the backend, it is necessary to install Flask for Python:
