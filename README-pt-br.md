@@ -5,7 +5,7 @@ Quagmire é um jogo de navegador sobre comércio de produtos entre cidades em um
 Além da página de jogo, o site também conta com uma página de visualização de dados para ver suas interações com o mundo através de gráficos.
 
 ## Acesso Online
-Atualmente, o site está online no GitHub Pages, e pode ser acessado [Aqui](https://yuri-crt.github.io/Quagmire-VV/).
+Atualmente, o site está online no GitHub Pages, e pode ser acessado [Aqui](https://Yuri-IQI.github.io/Quagmire-VV/).
 
 Observações:
 
